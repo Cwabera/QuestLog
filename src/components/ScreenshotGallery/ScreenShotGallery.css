@@ -1,0 +1,40 @@
+.screenshot-gallery {
+  margin-top: 2rem;
+}
+
+.screenshot-gallery h2 {
+  color: #d8cfff;
+  margin-bottom: 1rem;
+}
+
+.gallery-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 1rem;
+}
+
+.gallery-item {
+  overflow: hidden;
+  border-radius: 12px;
+  border: 1px solid rgba(155, 120, 255, 0.25);
+  background: rgba(10, 20, 45, 0.95);
+}
+
+.gallery-item img {
+  width: 100%;
+  height: 220px;
+  object-fit: cover;
+  display: block;
+
+  transition: transform 0.3s ease;
+}
+
+.gallery-item:hover img {
+  transform: scale(1.05);
+}
+
+.gallery-empty {
+  text-align: center;
+  color: #b8c1ec;
+  padding: 2rem;
+}

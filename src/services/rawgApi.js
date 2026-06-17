@@ -11,7 +11,6 @@ const handleResponse = async (response, errorMessage) => {
 
 export const getGames = async () => {
   const response = await fetch(`${BASE_URL}/games?key=${API_KEY}`);
-
   return handleResponse(response, "Failed to fetch games");
 };
 
@@ -23,12 +22,6 @@ export const searchGames = async (query) => {
   return handleResponse(response, "Failed to search games");
 };
 
-export const getGameById = async (id) => {
-  const response = await fetch(`${BASE_URL}/games/${id}?key=${API_KEY}`);
-
-  return handleResponse(response, "Failed to fetch game details");
-};
-
 export const getFilteredGames = async ({ genre, platform, sortBy }) => {
   let url = `${BASE_URL}/games?key=${API_KEY}`;
 
@@ -37,6 +30,18 @@ export const getFilteredGames = async ({ genre, platform, sortBy }) => {
   if (sortBy) url += `&ordering=${sortBy}`;
 
   const response = await fetch(url);
-
   return handleResponse(response, "Failed to fetch filtered games");
+};
+
+export const getGameById = async (id) => {
+  const response = await fetch(`${BASE_URL}/games/${id}?key=${API_KEY}`);
+  return handleResponse(response, "Failed to fetch game details");
+};
+
+export const getGameScreenshots = async (id) => {
+  const response = await fetch(
+    `${BASE_URL}/games/${id}/screenshots?key=${API_KEY}`
+  );
+
+  return handleResponse(response, "Failed to fetch screenshots");
 };
