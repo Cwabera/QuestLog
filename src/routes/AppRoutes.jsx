@@ -1,4 +1,8 @@
 import { Routes, Route } from "react-router-dom";
+import BrowseGames from "../pages/BrowseGames/BrowseGames";
+
+<Route path="/games" element={<BrowseGames />} />
+
 
 function AppRoutes() {
   return (

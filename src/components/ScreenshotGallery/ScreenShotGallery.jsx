@@ -1,10 +1,10 @@
 import "./ScreenshotGallery.css";
 
-function ScreenshotGallery({ screenshots }) {
-  if (!screenshots || screenshots.length === 0) {
+function ScreenshotGallery({ screenshots = [] }) {
+  if (screenshots.length === 0) {
     return (
       <div className="gallery-empty">
-        No screenshots available.
+        <p>No screenshots available.</p>
       </div>
     );
   }
@@ -17,11 +17,12 @@ function ScreenshotGallery({ screenshots }) {
         {screenshots.map((screenshot) => (
           <div
             key={screenshot.id}
-            className="gallery-item"
+            className="gallery-card"
           >
             <img
               src={screenshot.image}
               alt="Game Screenshot"
+              className="gallery-image"
             />
           </div>
         ))}

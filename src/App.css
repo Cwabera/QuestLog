@@ -70,3 +70,18 @@ button {
 button:hover {
   background: #7544d8;
 }
+
+.games-grid {
+  display: grid;
+  grid-template-columns: repeat(
+    auto-fill,
+    minmax(280px, 1fr)
+  );
+  gap: 1.5rem;
+  margin-top: 2rem;
+}
+
+.browse-games h1 {
+  color: #d8cfff;
+  margin-bottom: 1rem;
+}
