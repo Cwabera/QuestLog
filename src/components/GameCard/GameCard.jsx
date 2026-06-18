@@ -1,49 +1,36 @@
-import { Link } from "react-router-dom";
-import "./GameCard.css";
+import React from 'react';
+import './GameCard.css';
 
-function GameCard({ game }) {
-  const {
-    id,
-    name,
-    background_image,
-    rating,
-    released,
-  } = game;
+const GameCard = ({game}) => {
 
-  return (
+  const {name, background_image, rating, released} = game;
+
+  return(
+
     <div className="game-card">
-      <div className="card-image-container">
-        <img
-          src={background_image}
-          alt={name}
-          className="card-image"
-        />
-
-        {rating && (
-          <span className="game-rating">
-            ⭐ {rating}
-          </span>
-        )}
-      </div>
-
-      <div className="card-info-box">
-        <h3 className="game-title">{name}</h3>
-
-        <div className="card-content">
-          <p className="game-release-date">
-            Released: {released || "Unknown"}
-          </p>
+        <div className="card-image-container">
+            <img src={background_image} alt={name} className="card-image" />
+        
         </div>
 
-        <Link
-          to={`/games/${id}`}
-          className="details-button"
-        >
-          View Details
-        </Link>
-      </div>
+        <div className="card-info-box">
+          <h3 className="game-title">{name}</h3>
+
+         <div className="card-content">
+            <p className="game-release-date">Released: {released || 'Unknown'}</p>
+            { rating && <span className="game-rating">{rating}</span> }
+            
+          </div>
+           <button className="details-button">View Details</button>
+
+        </div>
     </div>
+    
   );
-}
+
+
+
+
+};
 
 export default GameCard;
