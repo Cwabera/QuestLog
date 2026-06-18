@@ -1,7 +1,7 @@
 import React, {useState, useEffect } from 'react';
 import GameCard from '../../components/GameCard/GameCard';
 import {getGames} from '../../services/rawgApi';
-import '../../styles/globals.css';
+import './Home.css';
 
 const  Home = () => {
     const [games,setGames] = useState([]);
