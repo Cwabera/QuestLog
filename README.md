@@ -15,3 +15,14 @@ The React Compiler is not enabled on this template because of its impact on dev 
 
 If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
 API Key 6744b8fd7cf2484b87174f26dfd242a3
+
+##  Live Deployment
+
+The project is live on the internet! You can visit the working website here:
+(https://questlog-phase1-group4.vercel.app)
+
+### How to run the live site:
+* The website is hosted for free using **Vercel**.
+* Any new code pushed to our GitHub repository will automatically update this link within 60 seconds.
+* **Important Note:** Make sure you add the `VITE_RAWG_API_KEY` into your Vercel Project Settings under "Environment Variables," or the games will fail to load on the live internet link.
+
