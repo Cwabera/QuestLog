@@ -2,27 +2,41 @@ import { Link } from "react-router-dom";
 import "./GameCard.css";
 
 function GameCard({ game }) {
+  const {
+    id,
+    name,
+    background_image,
+    rating,
+    released,
+  } = game;
+
   return (
     <div className="game-card">
-      <img
-        src={game.background_image}
-        alt={game.name}
-        className="game-card-image"
-      />
+      <div className="card-image-container">
+        <img
+          src={background_image}
+          alt={name}
+          className="card-image"
+        />
 
-      <div className="game-card-content">
-        <h3>{game.name}</h3>
+        {rating && (
+          <span className="game-rating">
+            ⭐ {rating}
+          </span>
+        )}
+      </div>
 
-        <p className="rating">
-          ⭐ Rating: {game.rating}
-        </p>
+      <div className="card-info-box">
+        <h3 className="game-title">{name}</h3>
 
-        <p className="release-date">
-          📅 Released: {game.released}
-        </p>
+        <div className="card-content">
+          <p className="game-release-date">
+            Released: {released || "Unknown"}
+          </p>
+        </div>
 
         <Link
-          to={`/games/${game.id}`}
+          to={`/games/${id}`}
           className="details-button"
         >
           View Details

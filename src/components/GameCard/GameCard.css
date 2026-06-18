@@ -1,48 +1,94 @@
 .game-card {
-  background: rgba(10, 20, 45, 0.95);
-  border: 1px solid rgba(155, 120, 255, 0.25);
-  border-radius: 16px;
+  background-color: #142344;
+  border: 1px solid #2e2156;
+  border-radius: 12px;
   overflow: hidden;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
   transition: transform 0.3s ease;
-  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.25);
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  width: 100%;
+  box-sizing: border-box;
+  position: relative;
 }
 
 .game-card:hover {
-  transform: translateY(-5px);
+  transform: translateY(-6px);
+  border-color: #7209b7;
+  box-shadow: 0 12px 24px rgba(114, 9, 183, 0.25);
 }
 
-.game-card-image {
+.game-card-image,
+.card-image {
   width: 100%;
   height: 220px;
   object-fit: cover;
+  display: block;
 }
 
-.game-card-content {
+.card-image-container {
+  overflow: hidden;
+  width: 100%;
+  height: 220px;
+  background-color: #0d1630;
+}
+
+.game-card-content,
+.card-info-box {
   padding: 1rem;
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+  background-color: #142344;
 }
 
-.game-card-content h3 {
+.game-card-content h3,
+.game-title {
   margin: 0 0 0.75rem;
+  font-size: 1.15rem;
+  line-height: 1.4;
   color: #d8cfff;
+  font-weight: 600;
 }
 
 .rating,
-.release-date {
+.release-date,
+.game-release-date {
   color: #b8c1ec;
   margin-bottom: 0.5rem;
 }
 
-.details-button {
+.game-rating {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  background-color: rgba(11, 17, 30, 0.9);
+  padding: 0.35rem 0.7rem;
+  border-radius: 20px;
+  font-size: 0.8rem;
+  font-weight: 700;
+  border: 1px solid #5c0d99;
+  color: #ffffff;
+}
+
+.details-button,
+.view-details-btn {
   display: inline-block;
-  margin-top: 0.75rem;
+  margin-top: auto;
   padding: 0.7rem 1rem;
-  background: #5b2fa8;
+  background: linear-gradient(135deg, #231e7d 0%, #591e9d 100%);
   color: white;
   border-radius: 8px;
   text-decoration: none;
+  border: none;
+  text-align: center;
+  font-weight: 600;
+  cursor: pointer;
   transition: background 0.3s ease;
 }
 
-.details-button:hover {
-  background: #7544d8;
+.details-button:hover,
+.view-details-btn:hover {
+  background: linear-gradient(135deg, #4895ef 0%, #7209b7 100%);
 }
