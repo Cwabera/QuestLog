@@ -10,9 +10,9 @@ import { FavouritesProvider } from "./context/FavouritesContext";
 ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>
     <BrowserRouter>
-      <FavoritesProvider>
+      <FavouritesProvider>
         <App />
-      </FavoritesProvider>
+      </FavouritesProvider>
     </BrowserRouter>
   </React.StrictMode>
 );

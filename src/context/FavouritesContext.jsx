@@ -1,54 +1,44 @@
 import { createContext, useContext, useState } from "react";
 
-const FavoritesContext = createContext();
+const FavouritesContext = createContext();
 
-export function FavoritesProvider({ children }) {
-  const [favorites, setFavorites] = useState([]);
+export function FavouritesProvider({ children }) {
+  const [favourites, setFavourites] = useState([]);
 
-  const addFavorite = (game) => {
-    const exists = favorites.find(
-      (favorite) => favorite.id === game.id
+  const addFavourite = (game) => {
+    const exists = favourites.find(
+      (favourite) => favourite.id === game.id
     );
 
     if (!exists) {
-      setFavorites([...favorites, game]);
+      setFavourites([...favourites, game]);
     }
   };
 
-  const removeFavorite = (gameId) => {
-    setFavorites(
-      favorites.filter((game) => game.id !== gameId)
+  const removeFavourite = (gameId) => {
+    setFavourites(
+      favourites.filter((game) => game.id !== gameId)
     );
   };
 
-  const isFavorite = (gameId) => {
-    return favorites.some(
-      (game) => game.id === gameId
-    );
-  };
-
-  const value = {
-    favorites,
-    addFavorite,
-    removeFavorite,
-    isFavorite,
+  const isFavourite = (gameId) => {
+    return favourites.some((game) => game.id === gameId);
   };
 
   return (
-    <FavoritesContext.Provider value={value}>
+    <FavouritesContext.Provider
+      value={{
+        favourites,
+        addFavourite,
+        removeFavourite,
+        isFavourite,
+      }}
+    >
       {children}
-    </FavoritesContext.Provider>
+    </FavouritesContext.Provider>
   );
 }
 
-export function useFavorites() {
-  const context = useContext(FavoritesContext);
-
-  if (!context) {
-    throw new Error(
-      "useFavorites must be used within a FavoritesProvider"
-    );
-  }
-
-  return context;
+export function useFavourites() {
+  return useContext(FavouritesContext);
 }
