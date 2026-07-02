@@ -12,6 +12,12 @@
   font-size: 1rem;
   margin-bottom: 20px;
   text-decoration: underline;
+  color: #0078ff;
+  transition: color 0.2s ease;
+}
+
+.back-button:hover {
+  color: #00c8ff;
 }
 
 .hero-image {
@@ -33,24 +39,48 @@
   .game-content {
     flex-direction: row;
   }
+
   .game-info-main {
     flex: 2;
   }
+
   .game-meta {
     flex: 1;
-    background: #f5f5f5;
-    padding: 20px;
-    border-radius: 8px;
+    background: #1b1f2a;
+    color: #f8f9fa;
+    padding: 24px;
+    border-radius: 12px;
+    border: 1px solid #31374d;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
   }
 }
 
 .meta-item {
-  margin-bottom: 20px;
+  background: #262d3d;
+  padding: 16px;
+  margin-bottom: 18px;
+  border-radius: 10px;
+  border-left: 4px solid #00c8ff;
+}
+
+.meta-item:last-child {
+  margin-bottom: 0;
 }
 
 .meta-item h3 {
-  margin: 0 0 8px 0;
-  font-size: 1.1rem;
+  margin: 0 0 10px;
+  color: #00c8ff;
+  font-size: 1rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.meta-item p {
+  margin: 0;
+  color: #ffffff;
+  font-size: 0.95rem;
+  line-height: 1.5;
 }
 
 .tag-list {
@@ -60,10 +90,18 @@
 }
 
 .tag {
-  background: #e0e0e0;
-  padding: 4px 10px;
-  border-radius: 16px;
-  font-size: 0.9rem;
+  background: linear-gradient(135deg, #00c8ff, #0078ff);
+  color: #ffffff;
+  padding: 6px 12px;
+  border-radius: 20px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  transition: all 0.2s ease;
+}
+
+.tag:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 10px rgba(0, 200, 255, 0.4);
 }
 
 .game-gallery {
@@ -82,9 +120,10 @@
   height: 100%;
   object-fit: cover;
   border-radius: 8px;
-  transition: transform 0.2s ease-in-out;
+  transition: transform 0.2s ease-in-out, box-shadow 0.2s ease;
 }
 
 .screenshot-image:hover {
-  transform: scale(1.02);
+  transform: scale(1.03);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.35);
 }
