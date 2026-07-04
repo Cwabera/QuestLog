@@ -11,5 +11,5 @@ class Review(db.Model):
     comment = db.Column(db.Text, nullable=False)
     created_at = db.Column(db.DateTime, default=datetime.utcnow)
 
-    # Relationship to user (ensure your User model in user.py has a matching relationship or backref)
+    # Relationship to user 
     user = db.relationship('User', backref='reviews')
