@@ -5,11 +5,39 @@ QuestLog is a lightweight full-stack web application designed to help multi-plat
 The application dynamically interfaces with the live public **RAWG API** to aggregate comprehensive game metadata, processing relational data state updates locally inside an asynchronous Python Flask micro-server pipeline.
 
 
-##  Live Production Deployment
-The client frontend interface is live on the internet! You can visit the working deployment here:
- **[https://questlog-phase1-group4.vercel.app](https://questlog-phase1-group4.vercel.app)**
+##  Live Production Deployments
+The application is fully deployed and synchronized across a secure, split cloud infrastructure network on the live public internet:
+
+*  **Frontend Client Interface (Vercel):** [https://vercel.app]()
+*  **Backend Database API Server (Render):** [https://onrender.com](https://questlog-backend-7tvc.onrender.com)
 
 ---
+
+## Tech Stack & Cloud Hosting Architecture
+
+### Production Cloud Architecture Map
+```text
+  [ Client Browser UI Workspace ]
+                │
+                ▼ (Asynchronous HTTPS Data Handshake)
+     [ Vercel Web Service ] ────────────> [ Render Application Cloud ]
+     (Hosts React SPA Build)               (Hosts Flask API & Serverless Database)
+                                                          │
+                                                          ▼ (OR/M Schema Map)
+                                                   [ questlog.db ]
+```
+
+### Core Production Technologies Matrix
+* **Frontend Hosting Platform:** Hosted on **Vercel**. Operates a compiled React.js production bundle using React Router DOM, Vite compilation engines, and Vanilla CSS3 custom variables.
+* **Backend Hosting Service:** Hosted on **Render** (Free Tier). Operates a persistent Python Flask application layer running on a high-performance Gunicorn production server engine.
+* **Database & OR/M Engine:** SQLite Instance Database (`questlog.db` serverless file storage inside the Render cloud container), Flask-SQLAlchemy Object Relational Mapper, and Flask-Alembic DDL migration schemas.
+
+### Production Environment Variables Configuration
+To link the decoupled server clusters, the following cloud configuration variables are injected inside the web dashboards:
+* **Vercel Settings:** `VITE_API_BASE_URL` is mapped directly to our live production database routing target: `https://questlog-backend-7tvc.onrender.com/api`.
+* **Render Settings:** `RAWG_API_KEY` is hardcoded globally within the app config context to securely pass credential verification to the RAWG metadata gateways.
+
+
 
 ##  Tech Stack & Architecture
 
@@ -24,7 +52,7 @@ The client frontend interface is live on the internet! You can visit the working
 * **Database Driver:** SQLite Engine (`questlog.db` serverless disk instance storage)
 * **Migrations Manager:** Flask-Alembic (DDL schema migration version loops)
 
----
+
 
 ##  Relational Database Schema Model Design
 The relational architecture links active players to nested data entries natively using explicit One-to-Many cascade foreign key constraints:
@@ -43,9 +71,8 @@ The relational architecture links active players to nested data entries natively
 3. **CollectionGame Model:** Maps specific video game assets stored inside collection lists (`id`, `collection_id`, `game_id`).
 4. **Favourite Model:** Holds persistent liked heart indices tied to user rows (`id`, `user_id`, `game_id`).
 
----
 
-## Full-Stack Local Installation Guide
+##  Full-Stack Local Installation Guide
 
 Follow these sequential setup commands to fire up both local development servers on your machine.
 
@@ -84,9 +111,11 @@ Open a **completely new terminal tab/window**, then navigate directly into your 
 cd ~/Capstone-Project/QuestLog-Phase1/client
 ```
 
-1. Secure your network pipeline base path by creating an environment file:
+1. Secure your network pipeline base path and inject your keys by creating an environment file:
    ```bash
-   echo "VITE_API_BASE_URL=http://127.0.0.1:5000" > .env
+   # FIXED: Appended the mandatory /api route endpoint mapping path securely
+   echo "VITE_API_BASE_URL=http://127.0.0.1:5000/api" > .env
+   echo "VITE_RAWG_API_KEY=6744b8fd7cf2484b87174f26dfd242a3" >> .env
    ```
 2. Install all required React modules and UI compilation assets:
    ```bash
@@ -97,6 +126,3 @@ cd ~/Capstone-Project/QuestLog-Phase1/client
    npm run dev
    ```
 *The client browser application will compile and launch on host link: `http://localhost:5173`*
-
-
-
