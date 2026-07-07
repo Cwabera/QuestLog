@@ -17,39 +17,39 @@
 
 .search-bar__input,
 .search-bar__button {
-    border: 1px solid #3a2a63;
+    border: 1px solid var(--color-border);
     border-radius: 8px;
-    font: inherent;
+    font: inherit;
     min-height: 3rem;
 }
 
 .search-bar__input {
-    background: #0d1730;
-    color: #ffffff;
+    background: #0c1d2c;
+    color: var(--color-text-primary);
     padding: 0 1rem;
     width: 100%;
 }
 
 .search-bar__input::placeholder {
-   color: #9fa8c7; 
+   color: var(--color-text-secondary); 
 }
 
 .search-bar__input:focus {
-    border-color: #9f7aea;
-    box-shadow: 0 0 0 3px rgba(159, 122, 234, 0.22);
+    border-color: var(--color-accent);
+    box-shadow: 0 0 0 3px rgba(45, 212, 191, 0.18);
     outline: none;
 }
 
 .search-bar__button {
-    background: #7c3aed;
-    color: #ffffff;
+    background: var(--color-accent-strong);
+    color: #06211d;
     cursor: pointer;
     font-weight: 800;
     padding: 0 1.25rem;
 }
 
 .search-bar__button:hover:not(:disabled) {
-    background: #9f7aea;
+    background: var(--color-accent);
 }
 
 .search-bar__button:disabled {
