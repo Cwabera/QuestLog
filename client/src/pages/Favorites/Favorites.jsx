@@ -8,7 +8,7 @@ function Favorites() {
   const [error, setError] = useState("");
 
   const USER_ID = 2; // Synchronized account profile target 
-  const API_URL = `http://localhost:5000/api/favourites/user/${USER_ID}`;
+  const API_URL = `https://questlog-backend-7tvc.onrender.com/api/favourites/user/${USER_ID}`;
 
   useEffect(() => {
     fetchFavorites();

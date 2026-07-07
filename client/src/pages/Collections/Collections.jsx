@@ -9,7 +9,7 @@ function Collections() {
 
   // Hardcoded for development until your team connects global Auth session context
   const USER_ID = 2; 
-  const API_BASE = "http://localhost:5000/api/collections";
+  const API_BASE = "https://questlog-backend-7tvc.onrender.com/api/collections";
 
   useEffect(() => {
     fetchCollections();
