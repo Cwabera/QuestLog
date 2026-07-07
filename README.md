@@ -1,28 +1,102 @@
-# React + Vite
+#  QuestLog: Full-Stack Video Game Portfolio Tracker
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+QuestLog is a lightweight full-stack web application designed to help multi-platform video game enthusiasts manage choice paralysis, catalog digital game collections, and monitor personal backlogs without ad-heavy clutter. 
 
-Currently, two official plugins are available:
+The application dynamically interfaces with the live public **RAWG API** to aggregate comprehensive game metadata, processing relational data state updates locally inside an asynchronous Python Flask micro-server pipeline.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
 
-## React Compiler
+##  Live Production Deployment
+The client frontend interface is live on the internet! You can visit the working deployment here:
+ **[https://questlog-phase1-group4.vercel.app](https://questlog-phase1-group4.vercel.app)**
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+---
 
-## Expanding the ESLint configuration
+##  Tech Stack & Architecture
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
-API Key 6744b8fd7cf2484b87174f26dfd242a3
+### Frontend Workspace
+* **Framework:** React.js (Single Page Application via Vite compilation engine)
+* **Routing Control:** React Router DOM (Dynamic NavMesh routes)
+* **Styling Matrix:** Vanilla CSS3 Variables (Custom deep purple and navy gaming layout theme)
 
-##  Live Deployment
+### Backend Service API
+* **Engine:** Python Flask Framework
+* **OR/M Matrix:** Flask-SQLAlchemy (Object Relational Mapping layer)
+* **Database Driver:** SQLite Engine (`questlog.db` serverless disk instance storage)
+* **Migrations Manager:** Flask-Alembic (DDL schema migration version loops)
 
-The project is live on the internet! You can visit the working website here:
-(https://questlog-phase1-group4.vercel.app)
+---
 
-### How to run the live site:
-* The website is hosted for free using **Vercel**.
-* Any new code pushed to our GitHub repository will automatically update this link within 60 seconds.
-* **Important Note:** Make sure you add the `VITE_RAWG_API_KEY` into your Vercel Project Settings under "Environment Variables," or the games will fail to load on the live internet link.
+##  Relational Database Schema Model Design
+The relational architecture links active players to nested data entries natively using explicit One-to-Many cascade foreign key constraints:
+
+```text
+  [ USER ]
+     │
+     ├─── (1-to-Many) ───> [ COLLECTION ] ─── (1-to-Many) ───> [ COLLECTION_GAME ]
+     │                                                              (game_id)
+     └─── (1-to-Many) ───> [ FAVOURITE ]
+                                (game_id)
+```
+
+1. **User Model:** Tracks account rows (`id`, `username`, `password_hash`).
+2. **Collection Model:** Tracks custom dashboard list channels (`id`, `name`, `user_id`).
+3. **CollectionGame Model:** Maps specific video game assets stored inside collection lists (`id`, `collection_id`, `game_id`).
+4. **Favourite Model:** Holds persistent liked heart indices tied to user rows (`id`, `user_id`, `game_id`).
+
+---
+
+## Full-Stack Local Installation Guide
+
+Follow these sequential setup commands to fire up both local development servers on your machine.
+
+### Part 1: Initializing the Flask Backend Server
+Open your system terminal and change directories into your server workspace root folder:
+```bash
+cd ~/Capstone-Project/QuestLog-Phase1/server
+```
+
+1. Initialize your isolated Python virtual environment:
+   ```bash
+   python3 -m venv venv
+   source venv/bin/activate
+   ```
+2. Download all required core team libraries:
+   ```bash
+   pip install -r requirements.txt
+   ```
+3. Generate your local structural database files and apply migration schemas:
+   ```bash
+   flask db upgrade
+   ```
+4. Run your team's structural seeding script to populate your default player test profiles:
+   ```bash
+   python -m app.seed
+   ```
+5. Turn on your live local API development loop:
+   ```bash
+   python run.py
+   ```
+*The backend API server will boot up cleanly listening on: `http://127.0.0.1:5000`*
+
+### Part 2: Initializing the React Frontend Client
+Open a **completely new terminal tab/window**, then navigate directly into your frontend code workspace folder:
+```bash
+cd ~/Capstone-Project/QuestLog-Phase1/client
+```
+
+1. Secure your network pipeline base path by creating an environment file:
+   ```bash
+   echo "VITE_API_BASE_URL=http://127.0.0.1:5000" > .env
+   ```
+2. Install all required React modules and UI compilation assets:
+   ```bash
+   npm install
+   ```
+3. Fire up the Vite local compilation development engine server:
+   ```bash
+   npm run dev
+   ```
+*The client browser application will compile and launch on host link: `http://localhost:5173`*
+
+
 
