@@ -26,7 +26,7 @@ function BrowseGames() {
   }, []);
 
   useEffect(() => {
-    if (genre || platform || sortBy) {
+    if (genre !== "" || platform !== "" || sortBy !== "") {
       handleFilters();
     }
   }, [genre, platform, sortBy]);

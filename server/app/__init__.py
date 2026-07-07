@@ -9,6 +9,8 @@ def create_app():
 
     app.config.from_object(Config)
 
+    app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///questlog.db'
+
     # Initialize extensions
     db.init_app(app)
     migrate.init_app(app, db)
@@ -31,12 +33,16 @@ def create_app():
     from app.routes.collections import collections_bp
     from app.routes.favourites import favourites_bp
     from app.routes.reviews import reviews_bp
+    from app.routes.games import games_bp
+
 
     app.register_blueprint(auth_bp, url_prefix="/api/auth")
     app.register_blueprint(users_bp, url_prefix="/api/users")
     app.register_blueprint(collections_bp, url_prefix="/api/collections")
     app.register_blueprint(favourites_bp, url_prefix="/api/favourites")
     app.register_blueprint(reviews_bp, url_prefix="/api/reviews")
+    app.register_blueprint(games_bp, url_prefix="/api/games")
+
 
     @app.route("/")
     def home():

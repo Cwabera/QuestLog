@@ -6,6 +6,7 @@ import About from "../pages/About/About";
 import Favorites from "../pages/Favorites/Favorites";
 import Login from "../pages/Login/Login";
 import Register from "../pages/Register/Register";
+import Collections from "../pages/Collections/Collections";
 
 function AppRoutes() {
   return (
@@ -17,6 +18,7 @@ function AppRoutes() {
       <Route path="/about" element={<About />} />
       <Route path="/login" element={<Login />} />
       <Route path="/register" element={<Register />} />
+      <Route path="/collections" element={<Collections />} />
     </Routes>
   );
 }

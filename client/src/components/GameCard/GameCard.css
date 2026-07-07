@@ -56,11 +56,36 @@
   color: #ffffff;
 }
 
+/* FLOATING FAVORITE HEART BUTTON ON TOP-LEFT */
+.fav-heart-btn {
+  position: absolute;
+  top: 12px;
+  left: 12px;
+  background-color: rgba(11, 17, 30, 0.8);
+  backdrop-filter: blur(6px);
+  border: 1px solid #2e2156;
+  border-radius: 50%;
+  width: 34px;
+  height: 34px;
+  font-size: 1.1rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.2s ease, border-color 0.2s ease;
+  z-index: 5;
+}
+
+.fav-heart-btn:hover {
+  transform: scale(1.15);
+  border-color: #7209b7;
+}
+
 .card-content {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 1.25rem;
+  margin-bottom: 0.5rem;
 }
 
 .game-title {
@@ -73,9 +98,40 @@
 }
 
 .game-release-date {
-  margin: 0 0 1.5rem 0;
+  margin: 0 0 0.5rem 0;
   font-size: 0.85rem;
   color: #64748b;
+}
+
+/* INTERACTIVE DROPDOWN CONTAINER */
+.add-to-collection-wrapper {
+  margin: 0.5rem 0 1rem 0;
+}
+
+.add-to-collection-wrapper select {
+  width: 100%;
+  padding: 0.55rem;
+  border-radius: 6px;
+  background-color: #0d1630;
+  color: #ffffff;
+  border: 1px solid #2e2156;
+  cursor: pointer;
+  font-size: 0.85rem;
+  font-weight: 600;
+  transition: border-color 0.2s ease;
+}
+
+.add-to-collection-wrapper select:hover {
+  border-color: #7209b7;
+}
+
+/* SYSTEM STATE RESPONSE FEEDBACK */
+.action-feedback-status {
+  color: #a29bfe;
+  font-size: 0.8rem;
+  font-weight: 700;
+  margin: 0.25rem 0;
+  text-align: center;
 }
 
 .view-details-btn {
@@ -91,11 +147,9 @@
   cursor: pointer;
   margin-top: auto;
   transition: background 0.2s ease;
-
   display: flex;
   align-items: center;
   justify-content: center;
-
   text-decoration: none;
 }
 
