@@ -9,7 +9,7 @@ The application dynamically interfaces with the live public **RAWG API** to aggr
 The application is fully deployed and synchronized across a secure, split cloud infrastructure network on the live public internet:
 
 *  **Frontend Client Interface (Vercel):** [https://quest-log-2rz9.vercel.app]
-*  **Backend Database API Server (Render):[https://questlog-backend-7tvc.onrender.com]
+*  **Backend Database API Server (Render)**:[https://questlog-backend-7tvc.onrender.com]
 
 ---
 
