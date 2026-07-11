@@ -1,5 +1,4 @@
 from flask import Blueprint, jsonify
-
 from flask_jwt_extended import (
     jwt_required,
     get_jwt_identity,
@@ -7,13 +6,12 @@ from flask_jwt_extended import (
 
 from app.models import User
 
-users_bp = Blueprint("users", __name__, url_prefix="/api/users")
+users_bp = Blueprint("users", __name__)
 
 
 @users_bp.route("/me", methods=["GET"])
 @jwt_required()
 def get_current_user():
-
     current_user_id = int(get_jwt_identity())
 
     user = User.query.get(current_user_id)
@@ -23,4 +21,4 @@ def get_current_user():
             "error": "User not found."
         }), 404
 
-    return jsonify({"user": user.to_dict()}), 200
+    return jsonify(user.to_dict()), 200
