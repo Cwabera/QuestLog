@@ -1,16 +1,9 @@
-import { Link, NavLink, useNavigate } from "react-router-dom";
-
-import { useAuth } from "../../context/useAuth";
+import { Link } from "react-router-dom";
+import { useAuth } from "../../context/AuthContext";
 import "./Navbar.css";
 
 function Navbar() {
   const { isAuthenticated, logout, user } = useAuth();
-  const navigate = useNavigate();
-
-  function handleLogout() {
-    logout();
-    navigate("/");
-  }
 
   return (
     <nav className="navbar">
@@ -19,26 +12,26 @@ function Navbar() {
       </div>
 
       <div className="navbar-links">
-        <NavLink to="/">Home</NavLink>
-        <NavLink to="/games">Browse Games</NavLink>
-        <NavLink to="/favorites">Favorites</NavLink>
-        <NavLink to="/about">About</NavLink>
-      </div>
+        <Link to="/">Home</Link>
+        <Link to="/games">Browse Games</Link>
+        <Link to="/favorites">Favorites</Link>
+        <Link to="/about">About</Link>
 
-      <div className="navbar-auth">
-        {isAuthenticated ? (
+        {!isAuthenticated ? (
           <>
-            <span>{user?.username}</span>
-            <button type="button" onClick={handleLogout}>
-              Log out
-            </button>
+            <Link to="/login">Login</Link>
+            <Link to="/register">Register</Link>
           </>
         ) : (
           <>
-            <NavLink to="/login">Log in</NavLink>
-            <NavLink to="/register" className="navbar-auth__primary">
-              Sign up
-            </NavLink>
+            <span>Hi, {user?.username}</span>
+            <button
+              type="button"
+              onClick={logout}
+              className="logout-btn"
+            >
+              Logout
+            </button>
           </>
         )}
       </div>

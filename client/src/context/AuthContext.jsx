@@ -1,88 +1,85 @@
-import { useEffect, useMemo, useState } from "react";
-
+import { createContext, useContext, useEffect, useState } from "react";
 import {
-  fetchCurrentUser,
-  getAuthToken,
-  getStoredUser,
   loginUser,
-  logoutUser,
   registerUser,
+  getCurrentUser,
 } from "../services/authApi";
-import { AuthContext } from "./authContextValue";
+
+const AuthContext = createContext();
 
 export function AuthProvider({ children }) {
-  const [user, setUser] = useState(getStoredUser);
-  const [token, setToken] = useState(getAuthToken);
-  const [isCheckingAuth, setIsCheckingAuth] = useState(Boolean(getAuthToken()));
+  const [user, setUser] = useState(null);
+  const [token, setToken] = useState(
+    localStorage.getItem("token") || ""
+  );
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    if (!token) {
-      return;
-    }
-
-    let ignore = false;
-
-    async function verifyUser() {
-      try {
-        const currentUser = await fetchCurrentUser();
-        if (!ignore) {
-          setUser(currentUser);
-        }
-      } catch {
-        if (!ignore) {
-          logoutUser();
-          setUser(null);
-          setToken(null);
-        }
-      } finally {
-        if (!ignore) {
-          setIsCheckingAuth(false);
-        }
+    async function loadUser() {
+      if (!token) {
+        setLoading(false);
+        return;
       }
+
+      try {
+        const currentUser = await getCurrentUser(token);
+        setUser(currentUser);
+      } catch (error) {
+        console.error(error);
+        logout();
+      }
+
+      setLoading(false);
     }
 
-    verifyUser();
-
-    return () => {
-      ignore = true;
-    };
+    loadUser();
   }, [token]);
 
-  async function login(credentials) {
-    const data = await loginUser(credentials);
-    setUser(data.user);
+  async function login(email, password) {
+    const data = await loginUser({
+      email,
+      password,
+    });
+
+    localStorage.setItem("token", data.access_token);
+
     setToken(data.access_token);
-    setIsCheckingAuth(false);
-    return data.user;
+    setUser(data.user);
+
+    return data;
   }
 
-  async function register(credentials) {
-    const data = await registerUser(credentials);
-    setUser(data.user);
-    setToken(data.access_token);
-    setIsCheckingAuth(false);
-    return data.user;
+  async function register(username, email, password) {
+    return await registerUser({
+      username,
+      email,
+      password,
+    });
   }
 
   function logout() {
-    logoutUser();
+    localStorage.removeItem("token");
+    setToken("");
     setUser(null);
-    setToken(null);
-    setIsCheckingAuth(false);
   }
 
-  const value = useMemo(
-    () => ({
-      user,
-      token,
-      isAuthenticated: Boolean(user && token),
-      isCheckingAuth,
-      login,
-      logout,
-      register,
-    }),
-    [user, token, isCheckingAuth]
+  return (
+    <AuthContext.Provider
+      value={{
+        user,
+        token,
+        loading,
+        login,
+        register,
+        logout,
+        isAuthenticated: !!user,
+      }}
+    >
+      {children}
+    </AuthContext.Provider>
   );
+}
 
-  return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
+export function useAuth() {
+  return useContext(AuthContext);
 }

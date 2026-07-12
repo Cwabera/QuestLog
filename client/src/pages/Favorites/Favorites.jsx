@@ -1,42 +1,22 @@
-import { useFavorites } from "../../context/useFavorites";
+import { useFavourites } from "../../context/FavouritesContext";
 import GameCard from "../../components/GameCard/GameCard";
-import "./Favorites.css";
 
 function Favorites() {
-  const { favorites, favoritesError, isLoadingFavorites } = useFavorites();
+  const { favourites } = useFavourites();
 
   return (
-    <main className="favorites-page">
-      <div className="favorites-header">
-        <h1>My Favorites</h1>
-        <p>Your saved games collection</p>
-      </div>
+    <main>
+      <h1>My Favorites</h1>
 
-      {isLoadingFavorites && (
-        <div className="empty-favorites">
-          <h2>Loading saved games</h2>
-          <p>Fetching your collection.</p>
-        </div>
-      )}
-
-      {favoritesError && (
-        <div className="empty-favorites">
-          <h2>Could not load favorites</h2>
-          <p>{favoritesError}</p>
-        </div>
-      )}
-
-      {!isLoadingFavorites && !favoritesError && favorites.length === 0 ? (
-        <div className="empty-favorites">
-          <h2>No Favorites Yet</h2>
-          <p>Browse games and add some to your favorites collection.</p>
-        </div>
-      ) : null}
-
-      {!isLoadingFavorites && !favoritesError && favorites.length > 0 && (
-        <div className="favorites-grid">
-          {favorites.map((game) => (
-            <GameCard key={game.id} game={game} />
+      {favourites.length === 0 ? (
+        <p>No favorite games yet.</p>
+      ) : (
+        <div className="games-grid">
+          {favourites.map((game) => (
+            <GameCard
+              key={game.id}
+              game={game}
+            />
           ))}
         </div>
       )}

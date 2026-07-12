@@ -1,84 +1,53 @@
-export const API_BASE_URL =
-  import.meta.env.VITE_API_BASE_URL || "http://localhost:5000/api";
+const API_BASE_URL = "http://127.0.0.1:5000/api/auth";
 
-const TOKEN_KEY = "questlog_token";
-const USER_KEY = "questlog_user";
-
-export async function apiRequest(path, options = {}) {
-  const token = getAuthToken();
-  const headers = {
-    Accept: "application/json",
-    ...options.headers,
-  };
-
-  if (options.body) {
-    headers["Content-Type"] = "application/json";
-  }
-
-  if (token) {
-    headers.Authorization = `Bearer ${token}`;
-  }
-
-  const response = await fetch(`${API_BASE_URL}${path}`, {
-    ...options,
-    headers,
-    body: options.body ? JSON.stringify(options.body) : undefined,
-  });
-
-  const data = await response.json().catch(() => ({}));
-
-  if (!response.ok) {
-    throw new Error(data.error || "Request failed.");
-  }
-
-  return data;
-}
-
-async function authRequest(path, payload) {
-  const data = await apiRequest(`/auth${path}`, {
+export async function registerUser(userData) {
+  const response = await fetch(`${API_BASE_URL}/register`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
     },
-    body: payload,
+    body: JSON.stringify(userData),
   });
 
-  if (data.access_token) {
-    localStorage.setItem(TOKEN_KEY, data.access_token);
-  }
+  const data = await response.json();
 
-  if (data.user) {
-    localStorage.setItem(USER_KEY, JSON.stringify(data.user));
+  if (!response.ok) {
+    throw new Error(data.error || "Registration failed");
   }
 
   return data;
 }
 
-export function registerUser({ username, email, password }) {
-  return authRequest("/register", { username, email, password });
+export async function loginUser(credentials) {
+  const response = await fetch(`${API_BASE_URL}/login`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(credentials),
+  });
+
+  const data = await response.json();
+
+  if (!response.ok) {
+    throw new Error(data.error || "Login failed");
+  }
+
+  return data;
 }
 
-export function loginUser({ email, password }) {
-  return authRequest("/login", { email, password });
-}
+export async function getCurrentUser(token) {
+  const response = await fetch("http://127.0.0.1:5000/api/users/me", {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
 
-export async function fetchCurrentUser() {
-  const data = await apiRequest("/auth/me");
-  const user = data.user || data;
-  localStorage.setItem(USER_KEY, JSON.stringify(user));
-  return user;
-}
+  const data = await response.json();
 
-export function logoutUser() {
-  localStorage.removeItem(TOKEN_KEY);
-  localStorage.removeItem(USER_KEY);
-}
+  if (!response.ok) {
+    throw new Error(data.error || "Failed to fetch user");
+  }
 
-export function getAuthToken() {
-  return localStorage.getItem(TOKEN_KEY);
-}
-
-export function getStoredUser() {
-  const user = localStorage.getItem(USER_KEY);
-  return user ? JSON.parse(user) : null;
+  return data;
 }
