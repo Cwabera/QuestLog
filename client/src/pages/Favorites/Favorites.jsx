@@ -1,18 +1,18 @@
-import { useFavorites } from "../../context/FavoritesContext";
+import { useFavourites } from "../../context/FavouritesContext";
 import GameCard from "../../components/GameCard/GameCard";
 
 function Favorites() {
-  const { favorites } = useFavorites();
+  const { favourites } = useFavourites();
 
   return (
     <main>
       <h1>My Favorites</h1>
 
-      {favorites.length === 0 ? (
+      {favourites.length === 0 ? (
         <p>No favorite games yet.</p>
       ) : (
         <div className="games-grid">
-          {favorites.map((game) => (
+          {favourites.map((game) => (
             <GameCard
               key={game.id}
               game={game}
