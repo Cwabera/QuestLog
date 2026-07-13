@@ -1,3 +1,15 @@
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  background: linear-gradient(135deg, #071426, #1b1035, #2b145a);
+  color: #f5f7ff;
+  font-family: Arial, Helvetica, sans-serif;
+  min-height: 100vh;
+}
+
 .app {
   min-height: 100vh;
   padding: 1.5rem;
@@ -10,15 +22,16 @@
   margin-bottom: 2rem;
   border-radius: 18px;
   background: rgba(8, 18, 40, 0.85);
-  border: 1px solid rgba(155, 120, 255, 0.35);
-  box-shadow: 0 0 25px rgba(94, 44, 165, 0.35);
+  box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+  backdrop-filter: blur(8px);
 }
 
 .app-header h1 {
   margin: 0;
   font-size: 3rem;
-  color: #c7b6ff;
-  letter-spacing: 1px;
+  background: linear-gradient(to right, #a78bfa, #f472b6);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
 }
 
 .app-header p {
@@ -51,15 +64,12 @@ main {
   padding: 2rem;
 }
 
-a {
-  color: #c7b6ff;
-  text-decoration: none;
-}
-
-button,
-select,
 input {
-  font-family: inherit;
+  background: rgba(8, 18, 40, 0.5);
+  border: 1px solid var(--color-border);
+  color: #ffffff;
+  padding: 0.7rem 1rem;
+  border-radius: 10px;
 }
 
 button {
@@ -78,12 +88,9 @@ button:hover {
 
 .games-grid {
   display: grid;
-  grid-template-columns: repeat(
-    auto-fill,
-    minmax(280px, 1fr)
-  );
-  gap: 1.5rem;
-  margin-top: 2rem;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 2rem;
+  padding: 1rem 0;
 }
 
 .browse-games h1 {
