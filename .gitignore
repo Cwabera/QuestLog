@@ -1,3 +1,9 @@
+# Local System and Virtual Environments
+.vscode-server/
+venv/
+server/venv/
+.venv/
+node_modules/
 
 # Logs
 .env
@@ -11,15 +17,12 @@ yarn-error.log*
 pnpm-debug.log*
 lerna-debug.log*
 
-node_modules
+# Production and Builds
 dist
 dist-ssr
 *.local
 __pycache__/
 *.py[cod]
-.venv/
-venv/
-server/venv/
 *.db
 *.sqlite
 *.sqlite3
@@ -35,3 +38,4 @@ instance/
 *.njsproj
 *.sln
 *.sw?
+
