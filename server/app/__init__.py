@@ -2,6 +2,7 @@ from flask import Flask
 
 from app.config import Config
 from app.extensions import db, migrate, bcrypt, jwt, cors
+from app.routes.auth import auth_bp
 
 
 def create_app():
@@ -41,6 +42,7 @@ def create_app():
     app.register_blueprint(collections_bp, url_prefix="/api/collections")
     app.register_blueprint(favourites_bp, url_prefix="/api/favourites")
     app.register_blueprint(reviews_bp, url_prefix="/api/reviews")
+    app.register_blueprint(games_bp, url_prefix="/api/games")
     app.register_blueprint(games_bp, url_prefix="/api/games")
 
 
