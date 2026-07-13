@@ -1,9 +1,9 @@
 import { Link } from "react-router-dom";
-import { useAuth } from "../../context/AuthContext"; // Added from their code
+import { useAuth } from "../../context/AuthContext";
 import "./Navbar.css";
 
 function Navbar() {
-  const { isAuthenticated, logout, user } = useAuth(); // Added from their code
+  const { isAuthenticated, logout, user } = useAuth();
 
   return (
     <nav className="navbar">
@@ -16,9 +16,7 @@ function Navbar() {
         <Link to="/games">Browse Games</Link>
         <Link to="/favorites">Favorites</Link>
         <Link to="/about">About</Link>
-        <Link to="/collections">Collections</Link> {/* Kept from your main branch */}
 
-        {/* Added their authentication buttons below your links */}
         {!isAuthenticated ? (
           <>
             <Link to="/login">Login</Link>

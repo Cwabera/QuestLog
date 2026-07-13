@@ -18,70 +18,87 @@ body {
 .app-header {
   text-align: center;
   padding: 2rem 1rem;
+  max-width: 1200px;
   margin-bottom: 2rem;
   border-radius: 18px;
   background: rgba(8, 18, 40, 0.85);
-  border: 1px solid rgba(155, 120, 255, 0.35);
-  box-shadow: 0 0 25px rgba(94, 44, 165, 0.35);
+  box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+  backdrop-filter: blur(8px);
 }
 
 .app-header h1 {
   margin: 0;
   font-size: 3rem;
-  color: #c7b6ff;
-  letter-spacing: 1px;
+  background: linear-gradient(to right, #a78bfa, #f472b6);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
 }
 
 .app-header p {
-  margin-top: 0.8rem;
-  color: #b8c1ec;
+  margin: 0.8rem auto 0;
+  color: var(--color-text-secondary);
   font-size: 1.1rem;
+  max-width: 680px;
+}
+
+@media (max-width: 640px) {
+  .app {
+    padding: 1rem;
+  }
+
+  .app-header h1 {
+    font-size: 2.2rem;
+  }
+
+  main {
+    padding: 1rem;
+  }
 }
 
 main {
   max-width: 1200px;
   margin: 0 auto;
   background: rgba(7, 20, 38, 0.75);
-  border: 1px solid rgba(155, 120, 255, 0.25);
+  border: 1px solid var(--color-border);
   border-radius: 18px;
   padding: 2rem;
 }
 
-a {
-  color: #c7b6ff;
-  text-decoration: none;
-}
-
-button,
-select,
 input {
-  font-family: inherit;
+  background: rgba(8, 18, 40, 0.5);
+  border: 1px solid var(--color-border);
+  color: #ffffff;
+  padding: 0.7rem 1rem;
+  border-radius: 10px;
 }
 
 button {
-  background: #5b2fa8;
+  background: var(--color-accent-strong);
   color: #ffffff;
   border: none;
-  border-radius: 10px;
+  border-radius: 8px;
   padding: 0.7rem 1rem;
   cursor: pointer;
+  font-weight: 700;
 }
 
 button:hover {
-  background: #7544d8;
+  background: #9f7aea;
 }
 
 .games-grid {
   display: grid;
-  grid-template-columns: repeat(
-    auto-fill,
-    minmax(280px, 1fr)
-  );
-  gap: 1.5rem;
-  margin-top: 2rem;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 2rem;
+  padding: 1rem 0;
 }
 
 .browse-games h1 {
-  color: #d8cfff;
+  color: var(--color-text-accent);
   margin-bottom: 1rem;
+}
+
+.route-state {
+  color: var(--color-text-secondary);
+  text-align: center;
 }

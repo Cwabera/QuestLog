@@ -8,11 +8,13 @@ function App() {
       <Navbar />
 
       <header className="app-header">
-        <h1>QuestLog</h1>
+        <h1>🎮 QuestLog</h1>
         <p>Discover, explore, and track your next favorite game.</p>
       </header>
 
-      <AppRoutes />
+      <main>
+        <AppRoutes />
+      </main>
     </div>
   );
 }

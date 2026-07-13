@@ -1,27 +1,34 @@
 import React, { useState, useEffect } from "react";
-import "./Collections.css";
 import { Link } from "react-router-dom";
+import { useAuth } from "../../context/useAuth"; // Added to hook into Phase 3 sessions
+import "./Collections.css";
 
 function Collections() {
+  const { isAuthenticated, user } = useAuth(); // Destructure logged-in user profile data
   const [collections, setCollections] = useState([]);
   const [newListName, setNewListName] = useState("");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
 
-  // Hardcoded for development until your team connects global Auth session context
-  const USER_ID = 2; 
+  // Dynamically uses the logged-in user ID instead of a hardcoded 2
+  const dynamicUserId = user?.id; 
   
   const API_BASE = `https://questlog-backend-2.onrender.com/api/collections`;
 
   useEffect(() => {
-    fetchCollections();
-  }, []);
+    if (isAuthenticated && dynamicUserId) {
+      fetchCollections();
+    } else {
+      setCollections([]);
+    }
+  }, [isAuthenticated, dynamicUserId]);
 
-  // 1. READ: Fetch lists from Flask
+  // 1. READ: Fetch lists from Flask dynamically
   async function fetchCollections() {
     try {
       setLoading(true);
-      const res = await fetch(`${API_BASE}/user/${USER_ID}`);
+      setError("");
+      const res = await fetch(`${API_BASE}/user/${dynamicUserId}`);
       if (res.ok) {
         const data = await res.json();
         setCollections(Array.isArray(data) ? data : []);
@@ -34,18 +41,17 @@ function Collections() {
       setLoading(false);
     }
   }
-        
 
-  // 2. CREATE: Add a brand new collection board
+  // 2. CREATE: Add a brand new collection board dynamically
   async function handleCreateList(e) {
     e.preventDefault();
-    if (!newListName.trim()) return;
+    if (!newListName.trim() || !dynamicUserId) return;
 
     try {
       const res = await fetch(API_BASE, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ name: newListName, user_id: USER_ID })
+        body: JSON.stringify({ name: newListName, user_id: dynamicUserId })
       });
       if (res.ok) {
         setNewListName("");
@@ -105,15 +111,14 @@ function Collections() {
         {collections.map((list) => (
           <div key={list.id} className="collection-board">
             <div className="board-title-row">
-              <h2>{list.name} ({list.games.length})</h2>
+              <h2>{list.name} ({list.games ? list.games.length : 0})</h2>
               <button onClick={() => handleDeleteCollection(list.id)} className="delete-board-btn">🗑️ Delete List</button>
             </div>
 
             <div className="board-games-list">
-              {list.games.length === 0 && <p className="no-games-text">Drop titles into this workspace shelf.</p>}
-              {list.games.map((game) => (
+              {(!list.games || list.games.length === 0) && <p className="no-games-text">Drop titles into this workspace shelf.</p>}
+              {list.games && list.games.map((game) => (
                 <div key={game.id} className="board-game-item">
-
                   <Link 
                     to={`/games/${game.game_id || game.id}`} 
                     className="board-game-link"
@@ -126,8 +131,8 @@ function Collections() {
                       flex: "1"
                     }}
                   >
-                  <img src={game.background_image} alt={game.name} />
-                  <span>{game.name}</span>
+                    <img src={game.background_image || game.game_image} alt={game.game_name || game.name} style={{ width: "50px", height: "30px", objectFit: "cover", borderRadius: "4px" }} />
+                    <span>{game.game_name || game.name}</span>
                   </Link>
                   <button onClick={() => handleRemoveGame(game.id)} className="remove-game-btn">✕</button>
                 </div>

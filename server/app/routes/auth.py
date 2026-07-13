@@ -55,6 +55,11 @@ def login():
     email = data.get("email")
     password = data.get("password")
 
+    if not email or not password:
+        return jsonify({
+            "error": "Email and password are required."
+        }), 400
+
     user = User.query.filter_by(
         email=email
     ).first()
@@ -65,7 +70,7 @@ def login():
         }), 401
 
     access_token = create_access_token(
-        identity=user.id
+        identity=str(user.id)
     )
 
     return jsonify({

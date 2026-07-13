@@ -1,8 +1,28 @@
 import React, { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+
+// Combined Hooks: Phase 2 layout dependencies + Phase 3 Dynamic Auth Hooks
+import { useAuth } from "../../context/useAuth";
+import { useFavorites } from "../../context/useFavorites";
 import "./GameCard.css";
 
 const GameCard = ({ game }) => {
+  const navigate = useNavigate();
+  
+  // Phase 3 Authentication & Refactored Favorites Context
+  const { isAuthenticated, user } = useAuth(); 
+  const { addFavorite, isFavorite, removeFavorite } = useFavorites();
+  const [isSaving, setIsSaving] = useState(false);
+  const [saveError, setSaveError] = useState("");
+
+  // Phase 2 Dynamic User Collections State & Core API Connections
+  const [userLists, setUserLists] = useState([]);
+  const [message, setMessage] = useState("");
+
+  // Dynamically targets the logged-in user profile ID instead of hardcoding 2
+  const dynamicUserId = user?.id; 
+  const COLL_API = `https://questlog-backend-2.onrender.com/api/collections`;
+
   const {
     id,
     name,
@@ -11,33 +31,22 @@ const GameCard = ({ game }) => {
     released,
   } = game;
 
-  const [userLists, setUserLists] = useState([]);
-  const [isFavorite, setIsFavorite] = useState(false);
-  const [message, setMessage] = useState("");
+  const saved = isFavorite(id);
 
-  const USER_ID = 2;
-  
-  const COLL_API = `https://questlog-backend-2.onrender.com/api/collections`;
-  const FAV_API = `https://questlog-backend-2.onrender.com/api/favourites`;
-
+  // Phase 2 Lifecycle Hook - Safely tracks when users log in/out to switch collections
   useEffect(() => {
-    // 1. Fetch available lists for the save dropdown options
-    fetch(`${COLL_API}/user/${USER_ID}`)
+    if (!isAuthenticated || !dynamicUserId) {
+      setUserLists([]); // Clear dropdown arrays if logged out
+      return;
+    }
+
+    fetch(`${COLL_API}/user/${dynamicUserId}`)
       .then((res) => res.json())
       .then((data) => setUserLists(data))
       .catch(() => {});
+  }, [id, isAuthenticated, dynamicUserId]);
 
-    // 2. Check if this game is already in favorite on backend 
-    fetch(`${FAV_API}/user/${USER_ID}`)
-      .then((res) => res.json())
-      .then((favs) => {
-        const found = favs.some((f) => f.game_id === id || f.rawg_game_id === id);
-        setIsFavorite(found);
-      })
-      .catch(() => {});
-  }, [id]);
-
-  // 3.Add game to a selected collection board
+  // Phase 2 Asynchronous connection to push game snapshots into custom boards
   async function handleAddToList(collectionId) {
     if (!collectionId) return;
     setMessage("Saving...");
@@ -59,36 +68,46 @@ const GameCard = ({ game }) => {
     }
   }
 
-  // 4.Toggle favorite heart icon inside SQL
-  async function handleToggleFavorite() {
+  // Phase 3 Refactored Security Handler for Toggling Favorites
+  async function handleFavoriteClick() {
+    if (!isAuthenticated) {
+      navigate("/login", { state: { from: { pathname: "/favorites" } } });
+      return;
+    }
+
+    setIsSaving(true);
+    setSaveError("");
+
     try {
-      const res = await fetch(`${FAV_API}/toggle`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          user_id: USER_ID,
-          game_id: id,          
-          rawg_game_id: id
-        })
-      });
-      if (res.ok) {
-        setIsFavorite(!isFavorite);
+      if (saved) {
+        await removeFavorite(id);
+      } else {
+        await addFavorite(game);
       }
-    } catch {}
+    } catch (error) {
+      setSaveError(error.message);
+    } finally {
+      setIsSaving(false);
+    }
   }
 
   return (
     <div className="game-card">
       <div className="card-image-container">
-        <img
-          src={background_image}
-          alt={name}
-          className="card-image"
-        />
+        {background_image ? (
+          <img
+            src={background_image}
+            alt={name}
+            className="card-image"
+            loading="lazy"
+          />
+        ) : (
+          <div className="card-image card-image--empty">{name.charAt(0)}</div>
+        )}
 
         {rating && (
           <span className="game-rating">
-            ⭐ {rating}
+            ⭐ {rating.toFixed ? rating.toFixed(1) : rating}
           </span>
         )}
 
@@ -103,39 +122,53 @@ const GameCard = ({ game }) => {
       </div>
 
       <div className="card-info-box">
-        <h3 className="game-title">{name}</h3>
-
-        <div className="card-content">
-          <p className="game-release-date">
-            Released: {released || "Unknown"}
+        <div className="card-meta">
+          <h3>{name}</h3>
+          <p className="release-date">
+            Released: {released ? released : "N/A"}
           </p>
         </div>
 
-        {/* FEEDBACK STATUS TEXT CONTAINER */}
+        {/* FEEDBACK STATUS CONTAINER */}
         {message && <p className="action-feedback-status">{message}</p>}
+        {saveError && <p className="game-card__error">{saveError}</p>}
 
-        {/* ADD TO COLLECTION INTERACTIVE DROPDOWN */}
-        <div className="add-to-collection-wrapper">
-          <select 
-            onChange={(e) => {
-              handleAddToList(e.target.value);
-              e.target.value = ""; 
-            }}
-            defaultValue=""
-          >
-            <option value="" disabled>➕ Add to collection...</option>
-            {userLists.map((list) => (
-              <option key={list.id} value={list.id}>
-                {list.name}
-              </option>
-            ))}
-          </select>
-        </div>
+        {/* DYNAMIC ADD TO COLLECTION DROPDOWN - Displays only when logged in */}
+        {isAuthenticated && userLists.length > 0 && (
+          <div className="add-to-collection-wrapper" style={{ marginBottom: "1rem" }}>
+            <select 
+              onChange={(e) => {
+                handleAddToList(e.target.value);
+                e.target.value = ""; 
+              }}
+              defaultValue=""
+            >
+              <option value="" disabled>➕ Add to collection...</option>
+              {userLists.map((list) => (
+                <option key={list.id} value={list.id}>
+                  {list.name}
+                </option>
+              ))}
+            </select>
+          </div>
+        )}
+
+        {/* Refactored Phase 3 Toggle Save Button */}
+        <button
+          type="button"
+          className={`favorite-button ${saved ? "favorite-button--saved" : ""}`}
+          onClick={handleFavoriteClick}
+          disabled={isSaving}
+          aria-pressed={saved}
+          style={{ width: "100%", marginBottom: "0.5rem" }}
+        >
+          {isSaving ? "Saving..." : saved ? "❤️ Saved" : "🤍 Save to Favorites"}
+        </button>
 
         <Link
           to={`/games/${id}`}
-          className="view-details-btn"
-          
+          className="details-button"
+          style={{ display: "block", textAlign: "center", textDecoration: "none" }}
         >
           View Details
         </Link>

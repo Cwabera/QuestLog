@@ -1,76 +1,66 @@
-import React, { useState } from "react";
-import { loginUser } from "../../services/authApi.js";
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { useAuth } from "../../context/AuthContext";
 import "./Login.css";
 
-function Login() {
+export default function Login() {
+  const navigate = useNavigate();
+  const { login } = useAuth();
+
   const [formData, setFormData] = useState({
     email: "",
     password: "",
   });
-  const [status, setStatus] = useState("idle");
+
   const [error, setError] = useState("");
 
-  function handleChange(event) {
-    const { name, value } = event.target;
-    setFormData((currentData) => ({
-      ...currentData,
-      [name]: value,
-    }));
+  function handleChange(e) {
+    setFormData({
+      ...formData,
+      [e.target.name]: e.target.value,
+    });
   }
 
-  async function handleSubmit(event) {
-    event.preventDefault();
-    setStatus("loading");
-    setError("");
+  async function handleSubmit(e) {
+    e.preventDefault();
 
     try {
-      await loginUser(formData);
-      setStatus("success");
-    } catch (loginError) {
-      setError(loginError.message);
-      setStatus("error");
+      await login(formData.email, formData.password);
+      navigate("/");
+    } catch (err) {
+      setError(err.message);
     }
   }
 
   return (
-    <main className="auth-page">
-      <section className="auth-panel">
-        <p className="auth-panel__eyebrow">Welcome back</p>
-        <h1>Log in to QuestLog</h1>
+    <div className="login-page">
+      <h1>Login</h1>
 
-        <form className="auth-form" onSubmit={handleSubmit}>
-          <label htmlFor="login-email">Email</label>
-          <input
-            id="login-email"
-            name="email"
-            type="email"
-            value={formData.email}
-            onChange={handleChange}
-            required
-          />
+      {error && <p>{error}</p>}
 
-          <label htmlFor="login-password">Password</label>
-          <input
-            id="login-password"
-            name="password"
-            type="password"
-            value={formData.password}
-            onChange={handleChange}
-            required
-          />
+      <form onSubmit={handleSubmit}>
+        <input
+          type="email"
+          name="email"
+          placeholder="Email"
+          value={formData.email}
+          onChange={handleChange}
+          required
+        />
 
-          {error && <p className="auth-form__error">{error}</p>}
-          {status === "success" && (
-            <p className="auth-form__success">You are logged in.</p>
-          )}
+        <input
+          type="password"
+          name="password"
+          placeholder="Password"
+          value={formData.password}
+          onChange={handleChange}
+          required
+        />
 
-          <button type="submit" disabled={status === "loading"}>
-            {status === "loading" ? "Logging in" : "Log in"}
-          </button>
-        </form>
-      </section>
-    </main>
+        <button type="submit">
+          Login
+        </button>
+      </form>
+    </div>
   );
 }
-
-export default Login;
