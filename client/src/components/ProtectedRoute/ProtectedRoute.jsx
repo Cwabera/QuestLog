@@ -1,11 +1,16 @@
+import React from "react";
 import { Navigate } from "react-router-dom";
-import { useAuth } from "../../context/AuthContext";
+import { useAuth } from "../../context/AuthContext"; 
 
 function ProtectedRoute({ children }) {
   const { isAuthenticated, loading } = useAuth();
 
   if (loading) {
-    return <h2>Loading...</h2>;
+    return (
+      <div style={{ display: "flex", justifyContent: "center", alignItems: "center", minHeight: "60vh" }}>
+        <h2>Loading authentication state matrices...</h2>
+      </div>
+    );
   }
 
   if (!isAuthenticated) {

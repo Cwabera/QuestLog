@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 
 // Combined Hooks: Phase 2 layout dependencies + Phase 3 Dynamic Auth Hooks
-import { useAuth } from "../../context/useAuth";
+import { useAuth } from "../../context/AuthContext";
 import { useFavorites } from "../../context/useFavorites";
 import "./GameCard.css";
 
@@ -112,13 +112,16 @@ const GameCard = ({ game }) => {
         )}
 
         {/* FLOATING INTERACTIVE FAVORITE HEART ICON */}
+        
         <button 
-          className={`fav-heart-btn ${isFavorite ? "active" : ""}`} 
-          onClick={handleToggleFavorite}
-          title="Toggle Favorite Status"
-        >
-          {isFavorite ? "❤️" : "🤍"}
-        </button>
+        className={`fav-heart-btn ${saved ? "active" : ""}`} // Changed isFavorite to saved string check 
+        onClick={handleFavoriteClick} 
+        disabled={isSaving} 
+        title="Toggle Favorite Status"
+      >
+  {saved ? "❤️" : "🤍"}
+</button>
+
       </div>
 
       <div className="card-info-box">

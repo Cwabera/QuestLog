@@ -1,4 +1,4 @@
-import { createContext, useContext, useEffect, useState } from "react";
+import React, { createContext, useContext, useEffect, useState } from "react";
 import {
   loginUser,
   registerUser,
@@ -10,7 +10,7 @@ const AuthContext = createContext();
 export function AuthProvider({ children }) {
   const [user, setUser] = useState(null);
   const [token, setToken] = useState(
-    localStorage.getItem("token") || ""
+    localStorage.getItem("questlog_token") || ""
   );
   const [loading, setLoading] = useState(true);
 
@@ -41,7 +41,8 @@ export function AuthProvider({ children }) {
       password,
     });
 
-    localStorage.setItem("token", data.access_token);
+    localStorage.setItem("questlog_token", data.access_token);
+    localStorage.setItem("questlog_user", JSON.stringify(data.user));
 
     setToken(data.access_token);
     setUser(data.user);
@@ -58,7 +59,8 @@ export function AuthProvider({ children }) {
   }
 
   function logout() {
-    localStorage.removeItem("token");
+    localStorage.removeItem("questlog_token");
+    localStorage.removeItem("questlog_user");
     setToken("");
     setUser(null);
   }
@@ -81,5 +83,9 @@ export function AuthProvider({ children }) {
 }
 
 export function useAuth() {
-  return useContext(AuthContext);
+  const context = useContext(AuthContext);
+  if (!context) {
+    throw new Error("useAuth must be used inside an AuthProvider.");
+  }
+  return context;
 }
