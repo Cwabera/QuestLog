@@ -8,10 +8,10 @@ The application dynamically interfaces with the live public **RAWG API** to aggr
 ##  Live Production Deployments
 The application is fully deployed and synchronized across a secure, split cloud infrastructure network on the live public internet:
 
-*  **Frontend Client Interface (Vercel):** [https://quest-log-2rz9.vercel.app]
+*  **Frontend Client Interface (Vercel):** []
 *  **Backend Database API Server (Render)**:[https://questlog-backend-7tvc.onrender.com]
 
----
+
 
 ## Tech Stack & Cloud Hosting Architecture
 
@@ -126,61 +126,7 @@ cd ~/Capstone-Project/QuestLog-Phase1/client
    npm run dev
    ```
 *The client browser application will compile and launch on host link: `http://localhost:5173`*
-# QuestLog
 
-QuestLog is a full-stack Flask and React app for discovering games, saving favourites, and writing player reviews. It uses JWT authentication, user-owned resources, namespaced API routes, and protected React routes.
-
-## Features
-
-- Register, log in, persist auth state, and log out with JWTs.
-- Browse games through a Flask `/api/games` proxy. Add `RAWG_API_KEY` for live RAWG data, or use the built-in fallback games locally.
-- Save and remove user-owned favourites.
-- Create, read, update, and delete user-owned reviews.
-- Collections API for another authenticated user resource.
-- React routes show/hide private pages based on login state.
-
-## Tech Stack
-
-- Backend: Flask, SQLAlchemy, Flask-Migrate, Flask-JWT-Extended, Flask-Bcrypt
-- Frontend: React, Vite, React Router
-- Database: SQLite by default, configurable with `DATABASE_URI`
-
-## Setup
-
-1. Install backend dependencies.
-
-   ```bash
-   python3 -m venv server/venv
-   source server/venv/bin/activate
-   pip install -r requirements.txt
-   ```
-
-2. Configure backend environment.
-
-   ```bash
-   cp server/.env.example server/.env
-   ```
-
-   Set `SECRET_KEY` and `JWT_SECRET_KEY` to long random strings. Add `RAWG_API_KEY` if you want live game data.
-
-3. Create the database.
-
-   ```bash
-   cd server
-   flask --app run.py db upgrade
-   flask --app run.py run
-   ```
-
-4. Install and run the frontend in a second terminal.
-
-   ```bash
-   cd client
-   cp .env.example .env
-   npm install
-   npm run dev
-   ```
-
-The React app runs at `http://localhost:5173` and the API runs at `http://localhost:5000`.
 
 ## API Routes
 
