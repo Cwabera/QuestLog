@@ -1,5 +1,3 @@
-/.../src/services $ cd ~/Projects/QuestLog/client/src
-cat main.jsx
 import React from "react";
 import ReactDOM from "react-dom/client";
 import { BrowserRouter } from "react-router-dom";
