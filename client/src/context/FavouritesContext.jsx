@@ -77,6 +77,7 @@ export function FavoritesProvider({ children }) {
     <FavoritesContext.Provider
       value={{
         favorites: isAuthenticated ? favorites : [],
+        favourites: isAuthenticated ? favorites : [],
         favoritesError: isAuthenticated ? favoritesError : "",
         isLoadingFavorites,
         addFavorite,
@@ -88,3 +89,4 @@ export function FavoritesProvider({ children }) {
     </FavoritesContext.Provider>
   );
 }
+
