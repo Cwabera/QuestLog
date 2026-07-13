@@ -1,29 +1,24 @@
+/* Core GameCard Grid Layout Container */
 .game-card {
-  background-color: #2951a5;
-  border: 1px solid #2e2156;
-  border-radius: 12px;
+  background: rgba(11, 22, 45, 0.6);
+  border: 1px solid var(--color-border);
+  border-radius: 18px;
   overflow: hidden;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
-  transition: transform 0.3s ease;
   display: flex;
   flex-direction: column;
-  height: 100%;
-  width: 100%;
-  box-sizing: border-box;
+  transition: transform var(--transition-medium), box-shadow var(--transition-medium);
 }
 
 .game-card:hover {
-  transform: translateY(-6px);
-  border-color: #7209b7;
-  box-shadow: 0 12px 24px rgba(114, 9, 183, 0.25);
+  transform: translateY(-5px);
+  box-shadow: 0 12px 24px rgba(0, 0, 0, 0.3);
 }
 
 .card-image-container {
-  overflow: hidden;
-  width: 100%;
-  height: 160px;
-  background-color: #0d1630;
   position: relative;
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  background-color: rgba(5, 12, 28, 0.5);
 }
 
 .card-image {
@@ -33,6 +28,7 @@
   display: block;
 }
 
+/* Phase 3 Placeholder for missing game images */
 .card-image--empty {
   align-items: center;
   color: #c7b6ff;
@@ -47,10 +43,9 @@
   display: flex;
   flex-direction: column;
   flex-grow: 1;
-  justify-content: space-between;
-  background-color: #142344;
 }
 
+/* Floating Rating Stamp */
 .game-rating {
   position: absolute;
   top: 12px;
@@ -77,8 +72,8 @@
 }
 
 .game-title {
-  margin: 0 0 0.5rem 0;
-  font-size: 1.15rem;
+  margin: 0;
+  font-size: 1.25rem;
   line-height: 1.4;
   color: #ffffff;
   font-weight: 600;
@@ -91,12 +86,46 @@
   color: #64748b;
 }
 
+/* PHASE 2 INTERACTIVE DROPDOWN STYLES (Kept & Protected from your code) */
+.add-to-collection-wrapper {
+  margin: 0.5rem 0 1rem 0;
+  width: 100%;
+}
+
+.add-to-collection-wrapper select {
+  width: 100%;
+  padding: 0.55rem;
+  border-radius: 6px;
+  background-color: #0d1630;
+  color: #ffffff;
+  border: 1px solid #2e2156;
+  cursor: pointer;
+  font-size: 0.85rem;
+  font-weight: 600;
+  transition: border-color 0.2s ease;
+}
+
+.add-to-collection-wrapper select:hover {
+  border-color: #7209b7;
+}
+
+/* PHASE 2 SYSTEM STATE STATUS TEXT (Kept & Protected) */
+.action-feedback-status {
+  color: #a29bfe;
+  font-size: 0.8rem;
+  font-weight: 700;
+  margin: 0.25rem 0;
+  text-align: center;
+}
+
+/* Phase 3 Core Button Classes Configuration */
 .details-button,
 .favorite-button {
   border-radius: 8px;
   font-weight: 700;
   min-height: 2.5rem;
   width: 100%;
+  cursor: pointer;
 }
 
 .details-button {
@@ -119,6 +148,7 @@
   color: #d8cfff;
   border: 1px solid #5c0d99;
   margin-bottom: 0.65rem;
+  transition: background 0.2s ease;
 }
 
 .favorite-button--saved {
