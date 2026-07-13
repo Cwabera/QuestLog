@@ -1,16 +1,28 @@
-import { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 
+// Combined Hooks: Phase 2 layout dependencies + Phase 3 Dynamic Auth Hooks
 import { useAuth } from "../../context/useAuth";
 import { useFavorites } from "../../context/useFavorites";
 import "./GameCard.css";
 
 const GameCard = ({ game }) => {
   const navigate = useNavigate();
-  const { isAuthenticated } = useAuth();
+  
+  // Phase 3 Authentication & Refactored Favorites Context
+  const { isAuthenticated, user } = useAuth(); 
   const { addFavorite, isFavorite, removeFavorite } = useFavorites();
   const [isSaving, setIsSaving] = useState(false);
   const [saveError, setSaveError] = useState("");
+
+  // Phase 2 Dynamic User Collections State & Core API Connections
+  const [userLists, setUserLists] = useState([]);
+  const [message, setMessage] = useState("");
+
+  // Dynamically targets the logged-in user profile ID instead of hardcoding 2
+  const dynamicUserId = user?.id; 
+  const COLL_API = `https://questlog-backend-2.onrender.com/api/collections`;
+
   const {
     id,
     name,
@@ -18,8 +30,45 @@ const GameCard = ({ game }) => {
     rating,
     released,
   } = game;
+
   const saved = isFavorite(id);
 
+  // Phase 2 Lifecycle Hook - Safely tracks when users log in/out to switch collections
+  useEffect(() => {
+    if (!isAuthenticated || !dynamicUserId) {
+      setUserLists([]); // Clear dropdown arrays if logged out
+      return;
+    }
+
+    fetch(`${COLL_API}/user/${dynamicUserId}`)
+      .then((res) => res.json())
+      .then((data) => setUserLists(data))
+      .catch(() => {});
+  }, [id, isAuthenticated, dynamicUserId]);
+
+  // Phase 2 Asynchronous connection to push game snapshots into custom boards
+  async function handleAddToList(collectionId) {
+    if (!collectionId) return;
+    setMessage("Saving...");
+    try {
+      const res = await fetch(`${COLL_API}/${collectionId}/add-game`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          game_id: id, 
+          game_name: name,
+          game_image: background_image
+        })
+      });
+      const data = await res.json();
+      setMessage(data.message || "Saved!");
+      setTimeout(() => setMessage(""), 2000);
+    } catch {
+      setMessage("Error saving");
+    }
+  }
+
+  // Phase 3 Refactored Security Handler for Toggling Favorites
   async function handleFavoriteClick() {
     if (!isAuthenticated) {
       navigate("/login", { state: { from: { pathname: "/favorites" } } });
@@ -58,35 +107,59 @@ const GameCard = ({ game }) => {
 
         {rating && (
           <span className="game-rating">
-            {rating.toFixed ? rating.toFixed(1) : rating}
+            ⭐ {rating.toFixed ? rating.toFixed(1) : rating}
           </span>
         )}
       </div>
 
       <div className="card-info-box">
-        <h3 className="game-title">{name}</h3>
-
-        <div className="card-content">
-          <p className="game-release-date">
-            Released: {released || "Unknown"}
+        <div className="card-meta">
+          <h3>{name}</h3>
+          <p className="release-date">
+            Released: {released ? released : "N/A"}
           </p>
         </div>
 
+        {/* FEEDBACK STATUS CONTAINER */}
+        {message && <p className="action-feedback-status">{message}</p>}
         {saveError && <p className="game-card__error">{saveError}</p>}
 
+        {/* DYNAMIC ADD TO COLLECTION DROPDOWN - Displays only when logged in */}
+        {isAuthenticated && userLists.length > 0 && (
+          <div className="add-to-collection-wrapper" style={{ marginBottom: "1rem" }}>
+            <select 
+              onChange={(e) => {
+                handleAddToList(e.target.value);
+                e.target.value = ""; 
+              }}
+              defaultValue=""
+            >
+              <option value="" disabled>➕ Add to collection...</option>
+              {userLists.map((list) => (
+                <option key={list.id} value={list.id}>
+                  {list.name}
+                </option>
+              ))}
+            </select>
+          </div>
+        )}
+
+        {/* Refactored Phase 3 Toggle Save Button */}
         <button
           type="button"
           className={`favorite-button ${saved ? "favorite-button--saved" : ""}`}
           onClick={handleFavoriteClick}
           disabled={isSaving}
           aria-pressed={saved}
+          style={{ width: "100%", marginBottom: "0.5rem" }}
         >
-          {isSaving ? "Saving" : saved ? "Saved" : "Save"}
+          {isSaving ? "Saving..." : saved ? "❤️ Saved" : "🤍 Save to Favorites"}
         </button>
 
         <Link
           to={`/games/${id}`}
           className="details-button"
+          style={{ display: "block", textAlign: "center", textDecoration: "none" }}
         >
           View Details
         </Link>
