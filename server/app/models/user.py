@@ -1,3 +1,4 @@
+from datetime import datetime
 from app.extensions import db, bcrypt
 
 
@@ -5,43 +6,30 @@ class User(db.Model):
     __tablename__ = "users"
 
     id = db.Column(db.Integer, primary_key=True)
+    username = db.Column(db.String(64), unique=True, nullable=False, index=True)
+    email = db.Column(db.String(120), unique=True, nullable=False, index=True)
+    password_hash = db.Column(db.String(128), nullable=False)
 
-    username = db.Column(
-        db.String(80),
-        unique=True,
-        nullable=False,
-    )
+    # Restored your stable Phase 2 registration timestamp column field
+    created_at = db.Column(db.DateTime, default=datetime.utcnow)
 
-    email = db.Column(
-        db.String(120),
-        unique=True,
-        nullable=False,
-    )
-
-    password_hash = db.Column(
-        db.String(255),
-        nullable=False,
-    )
-
+    # Protected your explicit back_populates hooks to prevent SQLAlchemy mapping errors
     collections = db.relationship(
         "Collection",
-        backref="user",
-        lazy=True,
-        cascade="all, delete-orphan",
+        back_populates="user",
+        cascade="all, delete-orphan"
     )
 
     favourites = db.relationship(
         "Favourite",
-        backref="user",
-        lazy=True,
-        cascade="all, delete-orphan",
+        back_populates="user",
+        cascade="all, delete-orphan"
     )
 
     reviews = db.relationship(
         "Review",
-        backref="user",
-        lazy=True,
-        cascade="all, delete-orphan",
+        back_populates="user",
+        cascade="all, delete-orphan"
     )
 
     def set_password(self, password):
@@ -55,4 +43,8 @@ class User(db.Model):
             "id": self.id,
             "username": self.username,
             "email": self.email,
+            "created_at": self.created_at.isoformat() if self.created_at else None,
         }
+
+    def __repr__(self):
+        return f"<User {self.username}>"
