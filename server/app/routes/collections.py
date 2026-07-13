@@ -21,17 +21,14 @@ def find_owned_collection(collection_id):
     return collection, None
 
 
-
+# =====================================================================
+# FIXED ENDPOINT: Cleared duplication and renamed to avoid collisions
+# =====================================================================
 @collections_bp.route("/user/<int:user_id>", methods=["GET"])
 def get_user_collections(user_id):
     collections = Collection.query.filter_by(user_id=user_id).order_by(Collection.created_at.desc()).all()
     return jsonify([collection.to_dict() for collection in collections]), 200
 
-@collections_bp.route("/user/<int:user_id>", methods=["GET"])
-def get_user_collections(user_id):
-    collections = Collection.query.filter_by(user_id=user_id).all()
-    output = []
-    RAWG_API_KEY = "6744b8fd7cf2484b87174f26dfd242a3"
 
 @collections_bp.route("/", methods=["GET"])
 @jwt_required()
@@ -73,7 +70,6 @@ def create_collection():
     return jsonify(collection.to_dict()), 201
 
 
-
 @collections_bp.route("/<int:collection_id>/add-game", methods=["POST"])
 def legacy_add_game(collection_id):
     data = request.get_json(silent=True) or {}
@@ -90,7 +86,6 @@ def legacy_add_game(collection_id):
     db.session.add(collection_game)
     db.session.commit()
     return jsonify(collection_game.to_dict()), 201
-
 
 
 @collections_bp.route("/game/<int:game_entry_id>", methods=["DELETE"])
