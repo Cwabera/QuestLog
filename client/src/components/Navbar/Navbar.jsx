@@ -16,6 +16,7 @@ function Navbar() {
         <Link to="/games">Browse Games</Link>
         <Link to="/favorites">Favorites</Link>
         <Link to="/about">About</Link>
+        <Link to="/collections">Collections</Link>
 
         {!isAuthenticated ? (
           <>
