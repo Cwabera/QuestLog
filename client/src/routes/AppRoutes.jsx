@@ -2,7 +2,6 @@ import { Routes, Route } from "react-router-dom";
 
 import BrowseGames from "../pages/BrowseGames/BrowseGames";
 import GameDetails from "../pages/GameDetails/GameDetails";
-import Favorites from "../pages/Favorites/Favorites";
 import About from "../pages/About/About";
 import Favorites from "../pages/Favorites/Favorites";
 import Login from "../pages/Login/Login";
