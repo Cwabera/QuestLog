@@ -3,6 +3,7 @@ from flask import Flask, jsonify
 from app.config import Config
 from app.extensions import db, migrate, bcrypt, jwt, cors
 from app.routes.auth import auth_bp
+import os
 
 
 def create_app():
@@ -10,7 +11,7 @@ def create_app():
 
     app.config.from_object(Config)
 
-    app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///questlog.db'
+    app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get('DATABASE_URL', 'sqlite:///questlog.db')
 
     # Initialize extensions
     db.init_app(app)
