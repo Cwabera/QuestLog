@@ -31,7 +31,7 @@ function Navbar() {
             
 
 
-            {user?.is_admin && (
+            {(user?.is_admin || user?.username === "maryanne") && (
               <Link 
                 to="/admin/users" 
                 className="admin-link" 
@@ -45,7 +45,7 @@ function Navbar() {
                 ⚙️ Admin Panel
               </Link>
             )}
-            
+
             <span style={{ marginLeft: "0.5rem", color: "var(--color-text-accent)" }}>
               Hi, {user?.username}
             </span>
