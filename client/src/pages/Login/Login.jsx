@@ -23,6 +23,20 @@ export default function Login() {
 
   async function handleSubmit(e) {
     e.preventDefault();
+    setError(""); // Clear previous layout validation errors
+
+    // Instant validation check: Ensures email formatting standard contains text, an @ symbol, and a domain extension
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(formData.email)) {
+      setError("Please enter a valid email format (e.g., example@domain.com).");
+      return;
+    }
+
+    // Fast-fail constraint: Prevents obviously short dictionary entries from overloading your deployment routes
+    if (formData.password.length < 8) {
+      setError("Incorrect login credentials. Password must be at least 8 characters long.");
+      return;
+    }
 
     try {
       await login(formData.email, formData.password);
@@ -36,7 +50,7 @@ export default function Login() {
     <div className="login-page">
       <h1>Login</h1>
 
-      {error && <p>{error}</p>}
+      {error && <p className="error-message" style={{ color: "#f44336", fontWeight: "bold", marginBottom: "1rem" }}>{error}</p>}
 
       <form onSubmit={handleSubmit}>
         <input
