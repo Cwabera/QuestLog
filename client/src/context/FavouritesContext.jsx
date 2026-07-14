@@ -6,7 +6,7 @@ import {
   saveFavourite,
 } from "../services/favouritesApi";
 import { FavoritesContext } from "./favoritesContextValue";
-import { useAuth } from "./useAuth";
+import { useAuth } from "./AuthContext";
 
 export function FavoritesProvider({ children }) {
   const { isAuthenticated, user } = useAuth();
