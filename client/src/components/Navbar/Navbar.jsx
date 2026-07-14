@@ -29,6 +29,23 @@ function Navbar() {
             <Link to="/collections">Collections</Link>
             <Link to="/profile">My Profile</Link>
             
+
+
+            {user?.is_admin && (
+              <Link 
+                to="/admin/users" 
+                className="admin-link" 
+                style={{ 
+                  color: "#facc15", 
+                  fontWeight: "bold",
+                  borderBottom: "2px dashed #facc15",
+                  paddingBottom: "2px"
+                }}
+              >
+                ⚙️ Admin Panel
+              </Link>
+            )}
+            
             <span style={{ marginLeft: "0.5rem", color: "var(--color-text-accent)" }}>
               Hi, {user?.username}
             </span>
