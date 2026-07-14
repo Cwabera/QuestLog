@@ -26,7 +26,7 @@ def get_current_user():
 
 
 @users_bp.route("/all-accounts", methods=["GET"])
-@jwt_required()  
+#@jwt_required()  
 def get_all_registered_users():
     current_user_id = int(get_jwt_identity())
 
