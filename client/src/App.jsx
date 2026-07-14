@@ -1,10 +1,11 @@
 import Navbar from "./components/Navbar/Navbar";
 import AppRoutes from "./routes/AppRoutes";
 import "./App.css";
+import Footer from "./components/Footer/Footer";
 
 function App() {
   return (
-    <div className="app">
+    <div className="app" style={{ display: "flex", flexDirection: "column", minHeight: "100vh" }}>
       <Navbar />
 
       <header className="app-header">
@@ -12,11 +13,16 @@ function App() {
         <p>Discover, explore, and track your next favorite game.</p>
       </header>
 
-      <main>
+      
+      <main style={{ flex: 1 }}>
         <AppRoutes />
       </main>
+
+      
+      <Footer />
     </div>
   );
 }
+
 
 export default App;
