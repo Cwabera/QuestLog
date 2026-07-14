@@ -40,7 +40,7 @@ def create_app():
     app.register_blueprint(users_bp, url_prefix="/api/users")
     app.register_blueprint(collections_bp, url_prefix="/api/collections")
     app.register_blueprint(favourites_bp, url_prefix="/api/favourites")
-    app.register_blueprint(reviews_bp, url_prefix="/api/reviews")
+    app.register_blueprint(reviews_bp, url_prefix="/api")
     app.register_blueprint(games_bp, url_prefix="/api/games")
 
     @app.route("/")
