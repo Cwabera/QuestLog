@@ -35,7 +35,7 @@ def get_all_registered_users():
     requesting_user = User.query.get(current_user_id)
 
     # Professional Whitelist Guard
-    is_profile_admin = requesting_user and (requesting_user.is_admin or requesting_user.username == "maryann")
+    is_profile_admin = requesting_user and (requesting_user.is_admin or requesting_user.username == "maryanne")
 
     if not is_profile_admin:
         return jsonify({
@@ -49,7 +49,7 @@ def get_all_registered_users():
             "id": u.id,
             "username": u.username,
             "email": u.email,
-            "is_admin": u.is_admin or u.username == "maryann"
+            "is_admin": u.is_admin or u.username == "maryanne"
         } for u in all_users
     ]), 200
 

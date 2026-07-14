@@ -104,7 +104,7 @@ def login():
     )
 
     user_data = user.to_dict()
-    if user.username == "maryann":
+    if user.username == "maryanne":
         user_data["is_admin"] = True
 
     return jsonify({
