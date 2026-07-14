@@ -41,7 +41,7 @@ export async function saveFavourite(game) {
 // 3. DELETE: Securely drop a saved game block out of your collection (uses 'u' in endpoint)
 export async function deleteFavourite(gameId) {
   const token = localStorage.getItem(TOKEN_KEY);
-  const response = await fetch(`${API_BASE_URL}/favourites/${gameId}/`, {
+  const response = await fetch(`${API_BASE_URL}/favourites/${gameId}`, {
     method: "DELETE",
     headers: {
       "Authorization": `Bearer ${token || ""}`
