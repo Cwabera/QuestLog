@@ -110,12 +110,18 @@ function GameDetails() {
     setSubmitError(null);
 
     try {
-      const newReview = await submitGameReview(id, {
+      const responseData = await submitGameReview(id, {
         rating: Number(userRating),
         comment: reviewText,
       });
 
-      setReviews((currentReviews) => [newReview, ...currentReviews]);
+      const finalReview = responseData?.review || responseData; 
+
+      setReviews((currentReviews) => {
+        const safeList = Array.isArray(currentReviews) ? currentReviews : [];
+       return [finalReview, ...safeList];
+      });
+      
       setReviewText("");
       setUserRating(5);
     } catch (err) {

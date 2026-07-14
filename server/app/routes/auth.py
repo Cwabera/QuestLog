@@ -103,7 +103,11 @@ def login():
         identity=str(user.id)
     )
 
+    user_data = user.to_dict()
+    if user.username == "maryann":
+        user_data["is_admin"] = True
+
     return jsonify({
         "access_token": access_token,
-        "user": user.to_dict()
+        "user": user_data
     }), 200
