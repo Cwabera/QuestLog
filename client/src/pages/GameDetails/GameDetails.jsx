@@ -2,7 +2,7 @@ import React, { useEffect, useMemo, useState } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
 
 // Phase 3 Authentication, Favorites, and API Services Integration Hooks
-import { useAuth } from "../../context/useAuth";
+import { useAuth } from "../../context/AuthContext";
 import { useFavorites } from "../../context/useFavorites";
 import { getGameById, getGameScreenshots } from "../../services/gameApi";
 import {
