@@ -75,7 +75,7 @@ def get_games():
 def get_game_details(game_id):
     params = {"key": current_app.config["RAWG_API_KEY"]}
     try:
-        res = requests.get(f"https://rawg.io{game_id}", params=params, timeout=10)
+        res = requests.get(f"https://api.rawg.io/api/{game_id}", params=params, timeout=10)
         if res.status_code == 200:
             return jsonify(res.json()), 200
         return jsonify({"error": "Failed to look up game particulars"}), res.status_code
@@ -88,9 +88,17 @@ def get_game_details(game_id):
 def get_game_screenshots_lookup(game_id):
     params = {"key": current_app.config["RAWG_API_KEY"]}
     try:
-        res = requests.get(f"https://rawg.io{game_id}/screenshots", params=params, timeout=10)
+        res = requests.get(f"https://api.rawg.io/api/{game_id}/screenshots", params=params, timeout=10)
         if res.status_code == 200:
             return jsonify(res.json()), 200
         return jsonify({"error": "Failed to load screenshots data"}), res.status_code
     except Exception as e:
         return jsonify({"error": str(e)}), 500
+    
+    
+@games_bp.route("/<int:game_id>/reviews", methods=["GET"])
+def get_game_reviews(game_id):
+    
+    
+    return jsonify([]), 200
+
