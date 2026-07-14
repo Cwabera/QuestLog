@@ -22,3 +22,19 @@ def get_current_user():
         }), 404
 
     return jsonify(user.to_dict()), 200
+
+
+@users_bp.route("/all-accounts", methods=["GET"])
+def get_all_registered_users():
+    # 1. Fetch every single user row out of your live cloud database table
+    all_users = User.query.all()
+    
+    # 2. Return a clean JSON array mapping out the data profiles
+    return jsonify([
+        {
+            "id": u.id,
+            "username": u.username,
+            "email": u.email
+        } for u in all_users
+    ]), 200
+
