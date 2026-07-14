@@ -13,6 +13,9 @@ class User(db.Model):
     # Restored your stable Phase 2 registration timestamp column field
     created_at = db.Column(db.DateTime, default=datetime.utcnow)
 
+    
+    is_admin = db.Column(db.Boolean, default=False, nullable=False)
+
     # Protected your explicit back_populates hooks to prevent SQLAlchemy mapping errors
     collections = db.relationship(
         "Collection",
@@ -44,6 +47,7 @@ class User(db.Model):
             "username": self.username,
             "email": self.email,
             "created_at": self.created_at.isoformat() if self.created_at else None,
+            "is_admin": self.is_admin,
         }
 
     def __repr__(self):

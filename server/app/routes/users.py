@@ -24,17 +24,30 @@ def get_current_user():
     return jsonify(user.to_dict()), 200
 
 
+
 @users_bp.route("/all-accounts", methods=["GET"])
+@jwt_required()  
 def get_all_registered_users():
-    # 1. Fetch every single user row out of your live cloud database table
+    current_user_id = int(get_jwt_identity())
+
+    # Look up the profile executing this network query
+    requesting_user = User.query.get(current_user_id)
+
+    # Gate 2: Professional Role Access Check
+    if not requesting_user or not requesting_user.is_admin:
+        return jsonify({
+            "error": "Access Denied. Administrative privileges required."
+        }), 403
+
+    # If the user passes both gates, return the complete verified account ledger
     all_users = User.query.all()
     
-    # 2. Return a clean JSON array mapping out the data profiles
     return jsonify([
         {
             "id": u.id,
             "username": u.username,
-            "email": u.email
+            "email": u.email,
+            "is_admin": u.is_admin  # Includes the role marker flag in the dataset mapping
         } for u in all_users
     ]), 200
 
