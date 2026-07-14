@@ -9,6 +9,7 @@ import Register from "../pages/Register/Register";
 import Collections from "../pages/Collections/Collections";
 import Home from "../pages/Home/Home";
 import Profile from "../pages/Profile/Profile";
+import AdminDashboard from "../pages/Profile/AdminDashboard";
 
 import ProtectedRoute from "../components/ProtectedRoute/ProtectedRoute";
 
@@ -41,6 +42,14 @@ function AppRoutes() {
         element={
           <ProtectedRoute>
             <Collections />
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path="/admin/users"
+        element={
+          <ProtectedRoute>
+            <AdminDashboard />
           </ProtectedRoute>
         }
       />
