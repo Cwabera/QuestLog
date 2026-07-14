@@ -322,12 +322,14 @@ function GameDetails() {
           </div>
         )}
 
-        <div className="reviews-list" style={{ marginTop: "1.5rem" }}>
-          {reviews.length === 0 ? (
-            <p className="no-reviews" style={{ color: "var(--color-text-secondary)" }}>No reviews yet.</p>
-          ) : (
-            reviews.map((review) => {
-              const canEdit = user?.id === review.user_id;
+            {/* --- CHANGE YOUR CODE TO LOOK EXACTLY LIKE THIS --- */}
+            <div className="reviews-list" style={{ marginTop: "1.5rem" }}>
+             {!Array.isArray(reviews) || reviews.length === 0 ? (
+                <p className="no-reviews" style={{ color: "var(--color-text-secondary)" }}>No reviews yet.</p>
+              ) : (
+                    reviews.map((review) => {
+                      const canEdit = user?.id === review.user_id;
+
 
               return (
                 <article key={review.id} className="review-card" style={{ background: "rgba(15,23,42,0.6)", padding: "1rem", borderRadius: "10px", marginBottom: "1rem", border: "1px solid var(--color-border)" }}>
