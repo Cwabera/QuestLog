@@ -1,5 +1,5 @@
 from flask import Flask, jsonify
-
+from flask_cors import CORS
 from app.config import Config
 from app.extensions import db, migrate, bcrypt, jwt, cors
 from app.routes.auth import auth_bp
@@ -18,7 +18,7 @@ def create_app():
     migrate.init_app(app, db)
     bcrypt.init_app(app)
     jwt.init_app(app)
-    cors.init_app(app)
+    CORS(app, resources={r"/api/*": {"origins": "*"}}, supports_credentials=True)
 
     # Import models
     from app.models import (
