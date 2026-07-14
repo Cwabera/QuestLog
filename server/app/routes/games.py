@@ -71,11 +71,18 @@ def get_games():
 
 
 # Phase 3 Integrated Helper Endpoint: Direct individual video game detail lookups
-@games_bp.route("/<int:game_id>/", methods=["GET"])
+@games_bp.route("/<path:game_id>", methods=["GET"])
+@games_bp.route("/<path:game_id>/", methods=["GET"])
 def get_game_details(game_id):
     params = {"key": current_app.config["RAWG_API_KEY"]}
+
+    clean_id = str(game_id).strip("/")
+
+    if "screenshots" in clean_id:
+        return get_game_screenshots_lookup(clean_id.replace("screenshots", ""))
+
     try:
-        res = requests.get(f"https://api.rawg.io/api/{game_id}", params=params, timeout=10)
+        res = requests.get(f"https://api.rawg.io/api/games/{clean_id}", params=params, timeout=10)
         if res.status_code == 200:
             return jsonify(res.json()), 200
         return jsonify({"error": "Failed to look up game particulars"}), res.status_code
@@ -84,11 +91,15 @@ def get_game_details(game_id):
 
 
 # Phase 3 Integrated Helper Endpoint: Direct video game screenshot gallery lookups
-@games_bp.route("/<int:game_id>/screenshots/", methods=["GET"])
+@games_bp.route("/<path:game_id>/screenshots", methods=["GET"])
+@games_bp.route("/<path:game_id>/screenshots/", methods=["GET"])
 def get_game_screenshots_lookup(game_id):
     params = {"key": current_app.config["RAWG_API_KEY"]}
+
+    clean_id = str(game_id).strip("/")
+    
     try:
-        res = requests.get(f"https://api.rawg.io/api/{game_id}/screenshots", params=params, timeout=10)
+        res = requests.get(f"https://api.rawg.io/api/{clean_id}/screenshots", params=params, timeout=10)
         if res.status_code == 200:
             return jsonify(res.json()), 200
         return jsonify({"error": "Failed to load screenshots data"}), res.status_code
