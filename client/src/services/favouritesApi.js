@@ -5,7 +5,7 @@ const TOKEN_KEY = "questlog_token";
 // 1. READ: Fetch all favorites from your Flask backend (uses 'u' in endpoint)
 export async function getFavourites() {
   const token = localStorage.getItem(TOKEN_KEY);
-  const response = await fetch(`${API_BASE_URL}/favourites/`, {
+  const response = await fetch(`${API_BASE_URL}/favourites`, {
     method: "GET",
     headers: {
       "Authorization": `Bearer ${token}`,
@@ -21,7 +21,7 @@ export async function getFavourites() {
 // 2. CREATE: Securely add a game to the backend (uses 'u' in endpoint)
 export async function saveFavourite(game) {
   const token = localStorage.getItem(TOKEN_KEY);
-  const response = await fetch(`${API_BASE_URL}/favourites/`, {
+  const response = await fetch(`${API_BASE_URL}/favourites`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
