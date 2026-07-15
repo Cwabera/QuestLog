@@ -12,7 +12,7 @@ export default function AdminDashboard() {
         const token = localStorage.getItem("questlog_token") || localStorage.getItem("token");
         
         const baseUrl = import.meta.env.VITE_API_BASE_URL ;
-        const response = await fetch(`${baseUrl}/api/users`, {
+        const response = await fetch(`${baseUrl}/users`, {
           method: "GET",
           headers: {
             "Content-Type": "application/json",
