@@ -32,6 +32,7 @@ The application is fully deployed and synchronized across a secure, split cloud 
 * **Backend Hosting Service:** Hosted on **Render** (Free Tier). Operates a persistent Python Flask application layer running on a high-performance Gunicorn production server engine.
 * **Database & OR/M Engine:** SQLite Instance Database (`questlog.db` serverless file storage inside the Render cloud container), Flask-SQLAlchemy Object Relational Mapper, and Flask-Alembic DDL migration schemas.
 
+
 ### Production Environment Variables Configuration
 To link the decoupled server clusters, the following cloud configuration variables are injected inside the web dashboards:
 * **Vercel Settings:** `VITE_API_BASE_URL` is mapped directly to our live production database routing target: `https://questlog-backend-7tvc.onrender.com/api`.
@@ -52,6 +53,30 @@ To link the decoupled server clusters, the following cloud configuration variabl
 * **Database Driver:** SQLite Engine (`questlog.db` serverless disk instance storage)
 * **Migrations Manager:** Flask-Alembic (DDL schema migration version loops)
 
+##  Production Database Migration (Neon.tech)
+
+The backend production database has been migrated from a local, stateless SQLite file to an external, cloud-hosted **PostgreSQL** database on **Neon.tech**. This ensures user accounts, collections, and authentication session states persist permanently across redeployments and server restarts on Render.
+
+###  Environment Configuration
+
+To support this setup, the application securely detects its operational environment via environment variable toggles.
+
+#### Required Production Variables (Render Dashboard)
+Ensure the following keys are configured in your hosting dashboard:
+* **`DATABASE_URL`**: Your Neon.tech connection string string (`postgres://...`)
+* **`SECRET_KEY`**: A permanent cryptographic string for server-side encryption blocks.
+* **`JWT_SECRET_KEY`**: A permanent signature string to prevent user token validation resets during redeploys.
+* **`RAWG_API_KEY`**: Your active gaming database index key token.
+
+#### Local Development Fallbacks
+If no production keys are detected, the configuration cleanly defaults to safe defaults for local machine testing:
+* **Database**: Local `sqlite:///questlog.db` tracking file.
+* **Keys**: Static development placeholders (`dev-secret-key-placeholder`).
+
+###  Architecture Fixes Applied
+
+1. **Dialect Uniformity**: Intercepts the cloud database connection header string to safely map Neon's standard `postgres://` prefix over to SQLAlchemy's strictly enforced `postgresql://` driver layer requirement.
+2. **Dynamic Generation**: Retains an active application runtime execution block (`db.create_all()`) to verify missing table structures build out on launch if database migrations haven't run cleanly during CI/CD steps.
 
 
 ##  Relational Database Schema Model Design
