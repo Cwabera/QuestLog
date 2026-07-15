@@ -9,7 +9,7 @@ class Config:
     SECRET_KEY = os.getenv("SECRET_KEY", "dev-secret-key-placeholder")
 
     # Restored your local SQLite database path fallback link so your data never disconnects
-    SQLALCHEMY_DATABASE_URI = os.getenv("DATABASE_URI") or "sqlite:///questlog.db"
+    SQLALCHEMY_DATABASE_URI = os.getenv("DATABASE_URL")  or os.getenv("DATABASE_URI") or "sqlite:///questlog.db"
 
     SQLALCHEMY_TRACK_MODIFICATIONS = False
 
