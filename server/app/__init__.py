@@ -11,7 +11,10 @@ def create_app():
 
     app.config.from_object(Config)
 
-    app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get('DATABASE_URL', 'sqlite:///questlog.db')
+    database_url = app.config.get('SQLALCHEMY_DATABASE_URI')
+    if database_url and database_url.startswith("postgres://"):
+        database_url = database_url.replace("postgres://", "postgresql://", 1)
+        app.config['SQLALCHEMY_DATABASE_URI'] = database_url
 
     # Initialize extensions
     db.init_app(app)
@@ -19,6 +22,9 @@ def create_app():
     bcrypt.init_app(app)
     jwt.init_app(app)
     CORS(app, resources={r"/api/*": {"origins": "*"}}, supports_credentials=True)
+
+    with app.app_context():
+        db.create_all()
 
     # Import models
     from app.models import (
