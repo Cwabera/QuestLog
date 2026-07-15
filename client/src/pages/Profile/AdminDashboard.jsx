@@ -11,7 +11,8 @@ export default function AdminDashboard() {
         // Pull your live admin JWT authorization token out of your browser memory
         const token = localStorage.getItem("questlog_token") || localStorage.getItem("token");
         
-        const response = await fetch("https://onrender.com", {
+        const baseUrl = import.meta.env.VITE_API_BASE_URL ;
+        const response = await fetch(`${baseUrl}/api/users`, {
           method: "GET",
           headers: {
             "Content-Type": "application/json",
